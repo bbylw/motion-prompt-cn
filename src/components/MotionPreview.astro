@@ -8,16 +8,20 @@ interface Props {
 const { pack = 'motion', index = 0, label = '' } = Astro.props;
 ---
 
-<div class="relative rounded-xl overflow-hidden bg-ink-900 border border-white/[0.06]">
-  <canvas
-    data-pack={pack}
-    data-index={index}
-    width={539}
-    height={208}
-    class="motion-preview-canvas block w-full h-auto"
-  />
+<div class="group relative rounded-xl overflow-hidden bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-150">
+  <div class="relative overflow-hidden">
+    <canvas
+      data-pack={pack}
+      data-index={index}
+      width={539}
+      height={208}
+      class="motion-preview-canvas block w-full h-auto"
+    />
+    <!-- Bottom gradient overlay for label readability -->
+    <div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-ink-950/80 to-transparent pointer-events-none"></div>
+  </div>
   {label && (
-    <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-ink-950/80 backdrop-blur-sm text-[10px] font-mono text-white/60 border border-white/[0.06]">
+    <div class="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/50">
       {label}
     </div>
   )}

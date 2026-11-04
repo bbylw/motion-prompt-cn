@@ -12,10 +12,10 @@ import { packs, usageMethods } from '../data/packs';
 
   <main>
     <!-- Hero: asymmetric layout -->
-    <section class="relative overflow-hidden pt-40 pb-32">
+    <section class="relative overflow-hidden pt-32 pb-16">
       <!-- Background: subtle grid + single accent orb -->
       <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute top-32 right-[15%] w-[500px] h-[500px] bg-accent/8 rounded-full blur-[150px]"></div>
+        <div class="absolute top-24 right-[10%] w-[400px] h-[400px] bg-accent/6 rounded-full blur-[120px]"></div>
         <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 80px 80px;"></div>
       </div>
 
@@ -54,7 +54,7 @@ import { packs, usageMethods } from '../data/packs';
           </div>
 
           <!-- Right: floating stats card -->
-          <div class="lg:col-span-5 lg:pt-12">
+          <div class="lg:col-span-5 lg:pt-8">
             <div class="relative">
               <div class="absolute -inset-4 bg-accent/5 rounded-3xl blur-2xl"></div>
               <div class="relative p-6 rounded-2xl bg-ink-900 border border-white/[0.08] card-shadow">
@@ -81,9 +81,9 @@ import { packs, usageMethods } from '../data/packs';
     </section>
 
     <!-- Motion Preview Showcase -->
-    <section class="py-20 border-b border-white/[0.06]">
+    <section class="py-16 border-b border-white/[0.06]">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div class="max-w-xl">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
               <Icon name="play" size={12} strokeWidth={1.5} />
@@ -102,7 +102,7 @@ import { packs, usageMethods } from '../data/packs';
           </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <MotionPreview pack="motion" index={0} label="弹性入场 Pop-in" />
           <MotionPreview pack="motion" index={1} label="交错动画 Stagger" />
           <MotionPreview pack="motion" index={3} label="线条描绘 Line Draw" />
@@ -114,7 +114,7 @@ import { packs, usageMethods } from '../data/packs';
     </section>
 
     <!-- Marquee -->
-    <section class="py-8 border-b border-white/[0.06] overflow-hidden marquee">
+    <section class="py-6 border-b border-white/[0.06] overflow-hidden marquee">
       <div class="flex whitespace-nowrap animate-marquee marquee-content">
         {[0, 1].map((copy) => (
           <div class="flex items-center gap-8 pr-8" key={copy}>
@@ -130,9 +130,9 @@ import { packs, usageMethods } from '../data/packs';
     </section>
 
     <!-- Packs: asymmetric bento -->
-    <section id="packs" class="py-28">
+    <section id="packs" class="py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-16 max-w-2xl">
+        <div class="mb-12 max-w-2xl">
           <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
             <Icon name="grid" size={12} strokeWidth={1.5} />
             八组分类
@@ -194,9 +194,9 @@ import { packs, usageMethods } from '../data/packs';
     </section>
 
     <!-- Story: split screen -->
-    <section class="py-28 border-y border-white/[0.06] bg-ink-900/50">
+    <section class="py-20 border-y border-white/[0.06] bg-ink-900/50">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>
             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
               <Icon name="sparkles" size={12} strokeWidth={1.5} />
@@ -213,7 +213,7 @@ import { packs, usageMethods } from '../data/packs';
             </p>
           </div>
 
-          <div class="relative">
+          <div class="relative lg:pt-8">
             <div class="p-6 rounded-2xl bg-ink-950 border border-white/[0.08]">
               <div class="space-y-3">
                 {[
@@ -241,9 +241,9 @@ import { packs, usageMethods } from '../data/packs';
     </section>
 
     <!-- Usage: numbered list style -->
-    <section id="usage" class="py-28">
+    <section id="usage" class="py-20">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-16 max-w-2xl">
+        <div class="mb-12 max-w-2xl">
           <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
             <Icon name="book" size={12} strokeWidth={1.5} />
             使用方式
@@ -258,7 +258,7 @@ import { packs, usageMethods } from '../data/packs';
 
         <div class="space-y-4">
           {usageMethods.map((method) => (
-            <div class="group p-6 md:p-8 rounded-2xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 card-shadow">
+            <div class="group p-5 md:p-6 rounded-2xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 card-shadow">
               <div class="flex items-start gap-6">
                 <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
                   <Icon name={method.icon} size={20} strokeWidth={1.5} />
@@ -271,7 +271,7 @@ import { packs, usageMethods } from '../data/packs';
                     {method.description}
                   </p>
 
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <ol class="space-y-2">
                       {method.steps.map((step, i) => (
                         <li class="flex items-start gap-2.5 text-sm text-white/40">
@@ -302,7 +302,7 @@ import { packs, usageMethods } from '../data/packs';
     </section>
 
     <!-- CTA -->
-    <section class="py-28">
+    <section class="py-20">
       <div class="max-w-6xl mx-auto px-6">
         <div class="relative p-16 md:p-20 rounded-3xl bg-ink-900 border border-white/[0.08] overflow-hidden text-center">
           <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-accent/8 rounded-full blur-[100px]"></div>
