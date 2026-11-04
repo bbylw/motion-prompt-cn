@@ -1,0 +1,442 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { catalogPacks, catalogElements } from '../data/catalog';
+import { usageMethods, skillCommands } from '../data/packs';
+---
+
+<BaseLayout
+  title="文档 — Motion Prompt"
+  description="Motion Prompt 完整文档：192 个名称、八组分类、使用方式、技能参考与安装指南"
+>
+  <Navbar />
+
+  <main class="pt-24 pb-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <!-- Page header -->
+      <div class="mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
+          <Icon name="book" size={12} strokeWidth={1.5} />
+          完整文档
+        </div>
+        <h1 class="text-display text-5xl md:text-6xl text-white mb-4">文档</h1>
+        <p class="text-body text-white/35 max-w-2xl">
+          Motion Prompt 是一套为「你让 AI 做的那些事」而准备的名称库。本文档涵盖所有分组、使用方式与技能参考。
+        </p>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="sticky top-16 z-40 py-4 mb-8 -mx-6 px-6 bg-ink-950/90 backdrop-blur-xl border-b border-white/[0.06]">
+        <div class="flex flex-col md:flex-row gap-4">
+          <!-- Search -->
+          <div class="relative flex-1">
+            <Icon name="search" size={16} strokeWidth={1.5} class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
+            <input
+              type="text"
+              id="search-input"
+              placeholder="搜索名称、含义或标签…"
+              class="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white placeholder-white/20 focus:outline-none focus:border-accent/40 focus:bg-white/[0.06] transition-colors duration-150 text-sm"
+            />
+          </div>
+
+          <!-- Pack filter -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0" id="pack-filters">
+            <button
+              class="filter-btn px-4 py-2.5 rounded-lg text-xs font-medium bg-white/[0.04] border border-white/[0.08] text-white/40 hover:text-white hover:bg-white/[0.08] transition-colors duration-150 whitespace-nowrap"
+              data-pack="all"
+            >
+              全部
+            </button>
+            {catalogPacks.map((pack) => (
+              <button
+                class="filter-btn px-4 py-2.5 rounded-lg text-xs font-medium bg-white/[0.04] border border-white/[0.08] text-white/40 hover:text-white hover:bg-white/[0.08] transition-colors duration-150 whitespace-nowrap"
+                data-pack={pack.id}
+              >
+                {pack.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Result count -->
+        <div class="mt-3 text-xs text-white/25" id="result-count">
+          共 192 个名称
+        </div>
+      </div>
+
+      <!-- Names grid: cards with official canvas previews -->
+      <div id="names-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-20">
+        {catalogPacks.map((pack) =>
+          catalogElements
+            .filter((el) => el.pack === pack.id)
+            .map((el, idx) => (
+              <div
+                class="name-card group relative rounded-xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-150 card-shadow overflow-hidden"
+                data-pack={pack.id}
+                data-name={el.name}
+                data-name-en={el.nameEn}
+                data-meaning={el.meaning}
+                data-tags={el.tags.join(',')}
+              >
+                <!-- Canvas preview using official pack cells -->
+                <div class="relative bg-ink-950 overflow-hidden" style={`aspect-ratio: ${pack.width}/${pack.height}`}>
+                  <canvas
+                    class="name-preview-canvas block w-full h-full"
+                    data-pack={pack.id}
+                    data-index={idx}
+                    width={pack.width}
+                    height={pack.height}
+                  />
+                  <div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-ink-950/70 backdrop-blur-sm text-[10px] font-mono text-white/50 border border-white/[0.06]">
+                    #{el.id}
+                  </div>
+                  <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                    <span class="text-[10px] text-white/25 font-mono">{pack.name}</span>
+                  </div>
+                </div>
+
+                <!-- Info -->
+                <div class="p-4">
+                  <div class="flex items-baseline justify-between mb-1">
+                    <h3 class="font-display text-base font-semibold text-white">{el.name}</h3>
+                    <span class="text-[11px] text-white/20 font-mono">{el.nameEn}</span>
+                  </div>
+                  <p class="text-sm text-white/35 leading-relaxed line-clamp-2 mb-3">{el.meaning}</p>
+
+                  <div class="flex flex-wrap gap-1.5">
+                    {el.tags.slice(0, 3).map((tag) => (
+                      <span class="px-2 py-0.5 text-[10px] rounded-md bg-white/[0.04] text-white/25">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))
+        )}
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="hidden text-center py-20">
+        <div class="w-14 h-14 rounded-2xl bg-white/[0.04] flex items-center justify-center mx-auto mb-4">
+          <Icon name="search" size={20} strokeWidth={1.5} class="text-white/15" />
+        </div>
+        <h3 class="font-display text-lg font-semibold text-white mb-2">未找到匹配的名称</h3>
+        <p class="text-sm text-white/30">尝试使用其他关键词或筛选条件</p>
+      </div>
+
+      <!-- Usage methods -->
+      <section class="mb-20">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
+            <Icon name="book" size={18} strokeWidth={1.5} class="text-white/50" />
+          </div>
+          <h2 class="text-display text-3xl font-semibold text-white">三种使用方式</h2>
+        </div>
+        <div class="space-y-4">
+          {usageMethods.map((method) => (
+            <div class="p-6 md:p-8 rounded-2xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-150 card-shadow">
+              <div class="flex items-start gap-6">
+                <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+                  <Icon name={method.icon} size={20} strokeWidth={1.5} />
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-3">
+                    <h3 class="font-display text-xl font-semibold text-white">{method.title}</h3>
+                  </div>
+                  <p class="text-sm text-white/35 leading-relaxed mb-4">
+                    {method.description}
+                  </p>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ol class="space-y-2">
+                      {method.steps.map((step, i) => (
+                        <li class="flex items-start gap-2.5 text-sm text-white/40">
+                          <span class="w-5 h-5 rounded-full bg-white/[0.04] flex items-center justify-center text-[11px] text-white/40 shrink-0 mt-0.5">
+                            {i + 1}
+                          </span>
+                          {step}
+                        </li>
+                      ))}
+                    </ol>
+
+                    {method.code && (
+                      <div class="p-4 rounded-xl bg-ink-950 border border-white/[0.06] font-mono text-xs text-white/50 overflow-x-auto self-start">
+                        <div class="flex items-center gap-2 mb-2">
+                          <Icon name="terminal" size={11} strokeWidth={1.5} class="text-white/20" />
+                          <span class="text-white/20">terminal</span>
+                        </div>
+                        {method.code}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Skill reference -->
+      <section class="mb-20">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
+            <Icon name="terminal" size={18} strokeWidth={1.5} class="text-white/50" />
+          </div>
+          <h2 class="text-display text-3xl font-semibold text-white">技能参考</h2>
+        </div>
+        <p class="text-body text-white/35 mb-8">
+          需要 Node.js 18 或更高版本。安装后，Agent 会在浏览器中打开图库，等待你挑选并发送。
+        </p>
+
+        <!-- Install -->
+        <div class="p-6 md:p-8 rounded-2xl bg-ink-900 border border-white/[0.06] mb-6">
+          <h3 class="font-display text-lg font-semibold text-white mb-6">安装</h3>
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-ink-950 border border-white/[0.06] font-mono text-xs text-accent overflow-x-auto">
+              <div class="flex items-center gap-2 mb-2">
+                <Icon name="terminal" size={11} strokeWidth={1.5} class="text-white/20" />
+                <span class="text-white/20">terminal</span>
+              </div>
+              npx skills add showheyohtaki/motion-prompt
+            </div>
+            <p class="text-sm text-white/30">
+              用提示词安装：把下面这段粘贴到 Claude Code 或 Codex 中：
+            </p>
+            <div class="p-4 rounded-xl bg-ink-950 border border-white/[0.06] font-mono text-xs text-white/40 overflow-x-auto">
+              Read https://github.com/showheyohtaki/motion-prompt and install the motion-prompt skill in this environment.
+            </div>
+          </div>
+        </div>
+
+        <!-- Commands -->
+        <div class="p-6 md:p-8 rounded-2xl bg-ink-900 border border-white/[0.06] mb-6 overflow-x-auto">
+          <h3 class="font-display text-lg font-semibold text-white mb-6">命令</h3>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-white/[0.06]">
+                <th class="text-left py-3 pr-4 text-white/25 font-medium text-xs uppercase tracking-wider">命令</th>
+                <th class="text-left py-3 text-white/25 font-medium text-xs uppercase tracking-wider">作用</th>
+              </tr>
+            </thead>
+            <tbody>
+              {skillCommands.map((cmd) => (
+                <tr class="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02] transition-colors duration-100">
+                  <td class="py-3 pr-4 font-mono text-accent whitespace-nowrap text-xs">{cmd.command}</td>
+                  <td class="py-3 text-white/35 text-xs">{cmd.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- How it works -->
+        <div class="p-6 md:p-8 rounded-2xl bg-ink-900 border border-white/[0.06]">
+          <h3 class="font-display text-lg font-semibold text-white mb-6">工作原理</h3>
+          <ul class="space-y-5 text-sm">
+            <li class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-lg bg-white/[0.04] flex items-center justify-center shrink-0 mt-0.5">
+                <Icon name="code" size={14} strokeWidth={1.5} class="text-white/40" />
+              </div>
+              <div>
+                <div class="text-white/50 font-medium mb-1">一个元素就是一个函数</div>
+                <code class="text-[11px] font-mono text-accent bg-white/[0.04] px-1.5 py-0.5 rounded">cells[i](ctx, w, h, u)</code>
+                <span class="text-white/30 ml-2 text-xs">画面只取决于 u，不读取时钟，也不使用随机数。</span>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-lg bg-white/[0.04] flex items-center justify-center shrink-0 mt-0.5">
+                <Icon name="layers" size={14} strokeWidth={1.5} class="text-white/40" />
+              </div>
+              <div>
+                <div class="text-white/50 font-medium mb-1">共享 Kit</div>
+                <span class="text-white/30 text-xs">颜色、尺寸、周期长度和共享辅助函数都集中在一个「kit」中，每个分组各有自己的 kit。</span>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-lg bg-white/[0.04] flex items-center justify-center shrink-0 mt-0.5">
+                <Icon name="package" size={14} strokeWidth={1.5} class="text-white/40" />
+              </div>
+              <div>
+                <div class="text-white/50 font-medium mb-1">零依赖</div>
+                <span class="text-white/30 text-xs">不依赖任何外部库。该技能由三个文件构成：说明文档、移植笔记、查找脚本。</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- License & Author -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-6 md:p-8 rounded-2xl bg-ink-900 border border-white/[0.06]">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-white/[0.04] flex items-center justify-center">
+              <Icon name="award" size={16} strokeWidth={1.5} class="text-white/40" />
+            </div>
+            <h3 class="font-display text-lg font-semibold text-white">许可证</h3>
+          </div>
+          <p class="text-white/35 text-sm leading-relaxed mb-3">
+            <a href="https://github.com/showheyohtaki/motion-prompt/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">MIT License</a> © 2026 Shohei Ohtaki
+          </p>
+          <p class="text-white/20 text-xs leading-relaxed">
+            允许商业使用，包括代码、视频和图像。使用某个元素的代码时，请保留它的第一行署名。
+          </p>
+        </div>
+
+        <div class="p-6 md:p-8 rounded-2xl bg-ink-900 border border-white/[0.06]">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-white/[0.04] flex items-center justify-center">
+              <Icon name="users" size={16} strokeWidth={1.5} class="text-white/40" />
+            </div>
+            <h3 class="font-display text-lg font-semibold text-white">作者</h3>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-ink-950 font-display font-semibold text-sm shrink-0">
+              SO
+            </div>
+            <div>
+              <div class="text-white font-medium text-sm">Shohei Ohtaki</div>
+              <div class="text-xs text-white/25">株式会社デイトラ</div>
+              <a href="https://x.com/showheyohtaki" target="_blank" rel="noopener noreferrer" class="text-xs text-accent hover:underline">@showheyohtaki</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<!-- Official Motion Prompt runtime + packs -->
+<script is:inline src="/motion-prompt/runtime.js"></script>
+<script is:inline src="/motion-prompt/packs/motion.js"></script>
+<script is:inline src="/motion-prompt/packs/camera.js"></script>
+<script is:inline src="/motion-prompt/packs/ui.js"></script>
+<script is:inline src="/motion-prompt/packs/lp.js"></script>
+<script is:inline src="/motion-prompt/packs/photo.js"></script>
+<script is:inline src="/motion-prompt/packs/motion2.js"></script>
+<script is:inline src="/motion-prompt/packs/lp2.js"></script>
+<script is:inline src="/motion-prompt/packs/camera2.js"></script>
+
+<script is:inline>
+(function() {
+  // ===== Search & Filter =====
+  const searchInput = document.getElementById('search-input');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const nameCards = document.querySelectorAll('.name-card');
+  const resultCount = document.getElementById('result-count');
+  const emptyState = document.getElementById('empty-state');
+  const namesGrid = document.getElementById('names-grid');
+
+  let activePack = 'all';
+
+  function filterNames() {
+    const query = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    nameCards.forEach((card) => {
+      const pack = card.dataset.pack || '';
+      const name = card.dataset.name || '';
+      const nameEn = card.dataset.nameEn || '';
+      const meaning = card.dataset.meaning || '';
+      const tags = card.dataset.tags || '';
+
+      const matchesPack = activePack === 'all' || pack === activePack;
+      const matchesSearch = !query ||
+        name.toLowerCase().includes(query) ||
+        nameEn.toLowerCase().includes(query) ||
+        meaning.toLowerCase().includes(query) ||
+        tags.toLowerCase().includes(query);
+
+      card.style.display = (matchesPack && matchesSearch) ? '' : 'none';
+      if (matchesPack && matchesSearch) visibleCount++;
+    });
+
+    resultCount.textContent = visibleCount === 192 ? '共 192 个名称' : `找到 ${visibleCount} 个名称`;
+
+    if (visibleCount === 0) {
+      emptyState.classList.remove('hidden');
+      namesGrid.classList.add('hidden');
+    } else {
+      emptyState.classList.add('hidden');
+      namesGrid.classList.remove('hidden');
+    }
+  }
+
+  searchInput.addEventListener('input', filterNames);
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => {
+        b.classList.remove('bg-accent', 'border-accent', 'text-ink-950');
+        b.classList.add('bg-white/[0.04]', 'border-white/[0.08]', 'text-white/40');
+      });
+      btn.classList.remove('bg-white/[0.04]', 'border-white/[0.08]', 'text-white/40');
+      btn.classList.add('bg-accent', 'border-accent', 'text-ink-950');
+      activePack = btn.dataset.pack || 'all';
+      filterNames();
+    });
+  });
+
+  if (filterBtns.length > 0) {
+    const firstBtn = filterBtns[0];
+    firstBtn.classList.remove('bg-white/[0.04]', 'border-white/[0.08]', 'text-white/40');
+    firstBtn.classList.add('bg-accent', 'border-accent', 'text-ink-950');
+  }
+
+  // ===== Official Canvas Preview Rendering =====
+  // Uses MotionPrompt.packs[packId].cells[index](ctx, w, h, u)
+  // Each cell is a pure function of u (0 <= u < cycle seconds)
+
+  const canvases = Array.from(document.querySelectorAll('.name-preview-canvas')).map(canvas => {
+    const ctx = canvas.getContext('2d');
+    const packId = canvas.dataset.pack;
+    const index = parseInt(canvas.dataset.index, 10);
+    const pack = MotionPrompt.packs[packId];
+    return {
+      canvas,
+      ctx,
+      w: canvas.width,
+      h: canvas.height,
+      packId,
+      index,
+      pack,
+      visible: false
+    };
+  });
+
+  // IntersectionObserver: only render visible canvases
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const inst = canvases.find(c => c.canvas === entry.target);
+      if (inst) inst.visible = entry.isIntersecting;
+    });
+  }, { rootMargin: '100px' });
+
+  canvases.forEach(inst => observer.observe(inst.canvas));
+
+  // Shared rAF loop
+  let startTime = null;
+
+  function animate(timestamp) {
+    if (startTime === null) startTime = timestamp;
+    const elapsed = (timestamp - startTime) / 1000; // seconds
+
+    canvases.forEach(inst => {
+      if (!inst.visible || !inst.pack) return;
+
+      const cycle = inst.pack.cycle;
+      const u = (elapsed % cycle); // 0 <= u < cycle seconds
+
+      inst.ctx.clearRect(0, 0, inst.w, inst.h);
+      inst.pack.cells[inst.index](inst.ctx, inst.w, inst.h, u);
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+})();
+</script>

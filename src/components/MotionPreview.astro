@@ -1,0 +1,88 @@
+---
+interface Props {
+  pack?: string;
+  index?: number;
+  label?: string;
+}
+
+const { pack = 'motion', index = 0, label = '' } = Astro.props;
+---
+
+<div class="relative rounded-xl overflow-hidden bg-ink-900 border border-white/[0.06]">
+  <canvas
+    data-pack={pack}
+    data-index={index}
+    width={539}
+    height={208}
+    class="motion-preview-canvas block w-full h-auto"
+  />
+  {label && (
+    <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-ink-950/80 backdrop-blur-sm text-[10px] font-mono text-white/60 border border-white/[0.06]">
+      {label}
+    </div>
+  )}
+</div>
+
+<script is:inline src="/motion-prompt/runtime.js"></script>
+<script is:inline src="/motion-prompt/packs/motion.js"></script>
+<script is:inline src="/motion-prompt/packs/camera.js"></script>
+<script is:inline src="/motion-prompt/packs/ui.js"></script>
+<script is:inline src="/motion-prompt/packs/lp.js"></script>
+<script is:inline src="/motion-prompt/packs/photo.js"></script>
+<script is:inline src="/motion-prompt/packs/motion2.js"></script>
+<script is:inline src="/motion-prompt/packs/lp2.js"></script>
+<script is:inline src="/motion-prompt/packs/camera2.js"></script>
+
+<script is:inline>
+(function() {
+  const canvases = document.querySelectorAll('.motion-preview-canvas');
+  if (canvases.length === 0 || typeof MotionPrompt === 'undefined') return;
+
+  const instances = Array.from(canvases).map(canvas => {
+    const ctx = canvas.getContext('2d');
+    const packId = canvas.dataset.pack || 'motion';
+    const index = parseInt(canvas.dataset.index || '0', 10);
+    const pack = MotionPrompt.packs[packId];
+    if (!pack || !pack.cells[index]) return null;
+    return {
+      canvas,
+      ctx,
+      w: canvas.width,
+      h: canvas.height,
+      pack,
+      index,
+      visible: false
+    };
+  }).filter(Boolean);
+
+  if (instances.length === 0) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const inst = instances.find(c => c.canvas === entry.target);
+      if (inst) inst.visible = entry.isIntersecting;
+    });
+  }, { rootMargin: '100px' });
+
+  instances.forEach(inst => observer.observe(inst.canvas));
+
+  let startTime = null;
+
+  function animate(timestamp) {
+    if (startTime === null) startTime = timestamp;
+    const elapsed = (timestamp - startTime) / 1000;
+
+    instances.forEach(inst => {
+      if (!inst.visible) return;
+      const cycle = inst.pack.cycle;
+      const u = elapsed % cycle;
+      inst.ctx.clearRect(0, 0, inst.w, inst.h);
+      inst.pack.cells[inst.index](inst.ctx, inst.w, inst.h, u);
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+})();
+</script>
