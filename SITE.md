@@ -18,7 +18,7 @@
 | 样式 | Tailwind CSS v4（`@tailwindcss/vite`，CSS-first `@theme`） |
 | 字体 | `@fontsource/space-grotesk`（display）、`@fontsource/instrument-sans`（body），仅 latin 子集，自托管 |
 | 运行时/包管理 | Bun ≥ 1.4.4（CI 固定 1.4.4）；`dev`/`build`/`preview`/`check` 四个主脚本强制由 Bun 运行时执行，不需要 Node |
-| 类型检查 | `bun --bun run astro check` + TypeScript 6 + `@astrojs/check`；`@types/node` 仅提供类型声明，不参与运行 |
+| 类型检查 | `bun --bun run astro check` + TypeScript 6 + `@astrojs/check` + `@types/bun`；锁文件里的 `@types/node` 只是 `bun-types` 与 Vite 的传递依赖（.d.ts 声明，不参与运行） |
 | 无前端框架 | 无 React/Vue；交互均为原生脚本与 CSS |
 
 ## 常用命令
