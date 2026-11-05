@@ -37,7 +37,7 @@ import { usageMethods, skillCommands } from '../data/packs';
               type="text"
               id="search-input"
               placeholder="搜索名称、含义或标签…"
-              class="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white placeholder-white/20 focus:outline-none focus:border-accent/40 focus:bg-white/[0.06] transition-colors duration-150 text-sm"
+              class="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/40 focus:bg-white/[0.06] transition-colors duration-150 text-sm"
             />
           </div>
 
@@ -74,6 +74,7 @@ import { usageMethods, skillCommands } from '../data/packs';
             .map((el, idx) => (
               <div
                 class="name-card group relative rounded-xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-150 card-shadow overflow-hidden"
+                id={idx === 0 ? pack.id : undefined}
                 data-pack={pack.id}
                 data-name={el.name}
                 data-name-en={el.nameEn}
@@ -90,7 +91,7 @@ import { usageMethods, skillCommands } from '../data/packs';
                     height={pack.height}
                   />
                   <div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-ink-950/70 backdrop-blur-sm text-[10px] font-mono text-white/50 border border-white/[0.06]">
-                    #{el.id}
+                    #{el.no}
                   </div>
                   <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
@@ -396,10 +397,12 @@ import { usageMethods, skillCommands } from '../data/packs';
 
   // Lazy initialization: only create ctx when canvas becomes visible
   function initInstance(canvas) {
-    const ctx = canvas.getContext('2d');
     const packId = canvas.dataset.pack;
     const index = parseInt(canvas.dataset.index, 10);
     const pack = MotionPrompt.packs[packId];
+    if (!pack || !pack.cells[index]) return null;
+
+    const ctx = canvas.getContext('2d');
     const inst = {
       canvas,
       ctx,

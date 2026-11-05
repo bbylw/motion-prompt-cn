@@ -58,6 +58,8 @@ const navItems = [
           id="mobile-menu-btn"
           class="md:hidden p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/[0.04] transition-all"
           aria-label="菜单"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
         >
           <Icon name="menu" size={20} strokeWidth={1.5} />
         </button>
@@ -95,7 +97,8 @@ const navItems = [
   const menu = document.getElementById('mobile-menu');
   if (btn && menu) {
     btn.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
+      const isHidden = menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(!isHidden));
     });
   }
 
