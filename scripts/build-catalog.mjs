@@ -1,14 +1,11 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import vm from 'node:vm';
-import { fileURLToPath } from 'node:url';
-
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const sourcePath = path.join(root, 'data/motion-prompt-catalog.js');
-const outputPath = path.join(root, 'src/data/catalog.ts');
+/// <reference types="bun" />
+const root = `${import.meta.dir.replace(/\\/g, '/')}/..`;
+const sourcePath = `${root}/data/motion-prompt-catalog.js`;
+const outputPath = `${root}/src/data/catalog.ts`;
 
 const sandbox = { window: {} };
-vm.runInNewContext(fs.readFileSync(sourcePath, 'utf8'), sandbox, { filename: sourcePath });
+const code = await Bun.file(sourcePath).text();
+new Function('window', code)(sandbox.window);
 const catalog = sandbox.window.MP_CATALOG;
 
 if (!catalog?.elements?.length || !catalog?.packs?.length) {
@@ -72,5 +69,5 @@ export const catalogPacks: CatalogPack[] = ${JSON.stringify(packs, null, 2)};
 export const catalogElements: CatalogElement[] = ${JSON.stringify(elements, null, 2)};
 `;
 
-fs.writeFileSync(outputPath, source);
-console.log(`已生成 ${path.relative(root, outputPath)}：${packs.length} 组 / ${elements.length} 个名称`);
+await Bun.write(outputPath, source);
+console.log(`已生成 ${outputPath.replace(`${root}/`, '')}：${packs.length} 组 / ${elements.length} 个名称`);

@@ -17,7 +17,7 @@
 | 框架 | Astro 7（静态输出 `output: "static"`） |
 | 样式 | Tailwind CSS v4（`@tailwindcss/vite`，CSS-first `@theme`） |
 | 字体 | `@fontsource/space-grotesk`（display）、`@fontsource/instrument-sans`（body），仅 latin 子集，自托管 |
-| 运行时/包管理 | Bun ≥ 1.4.4（CI 固定 1.4.4）；`dev`/`build`/`preview`/`check` 四个主脚本强制由 Bun 运行时执行，不需要 Node |
+| 运行时/包管理 | Bun ≥ 1.4.4（CI 固定 1.4.4）；所有 Astro 命令（含 `astro` 脚本与 AGENTS.md 后台命令）都由 Bun 运行时执行，源码只用 Bun 原生 API，不需要 Node |
 | 类型检查 | `bun --bun run astro check` + TypeScript 6 + `@astrojs/check` + `@types/bun`；锁文件里的 `@types/node` 只是 `bun-types` 与 Vite 的传递依赖（.d.ts 声明，不参与运行） |
 | 无前端框架 | 无 React/Vue；交互均为原生脚本与 CSS |
 
@@ -25,7 +25,7 @@
 
 ```sh
 bun install                 # 安装依赖
-bun run dev                 # 本地开发（也可按 AGENTS.md 用 astro dev --background）
+bun run dev                 # 本地开发（也可按 AGENTS.md 用 bun run astro dev --background）
 bun run build               # 构建到 dist/
 bun run preview             # 预览构建产物
 bun run check               # 类型与模板校验（Bun 运行时）
@@ -33,7 +33,7 @@ bun run catalog             # 从官方数据重新生成 src/data/catalog.ts
 bun run verify              # check + build，CI 与本地提交前的完整校验
 ```
 
-`dev`、`build`、`preview`、`check` 脚本都带 `--bun`：它会忽略 Astro CLI 的 `#!/usr/bin/env node` shebang，强制由 Bun 运行时执行。因此类型检测、构建和开发服务器都不依赖 Node，`engines` 只声明 `bun >= 1.4.4`。注意 README 中「需要 Node.js 18 或更高版本」是上游技能 CLI 的要求，与本站的构建和类型检测无关。
+所有 Astro 脚本都带 `--bun`，它会忽略 Astro CLI 的 `#!/usr/bin/env node` shebang，强制由 Bun 运行时执行；`astro` 脚本直接指向 `node_modules/astro/bin/astro.mjs`，AGENTS.md 的后台命令也统一走 `bun run astro dev ...`。源码不再使用 `node:` 导入或 `process`：`astro.config.mjs` 用 `Bun.env` 读 `SITE_URL` / `BASE_PATH`（配合 `typeof Bun` 保护，Node 环境的编辑器加载配置也不会报错），`scripts/build-catalog.mjs` 用 `Bun.file` / `Bun.write` / `import.meta.dir` 和 `new Function` 解析官方数据。`engines` 只声明 `bun >= 1.4.4`。注意 README 中「需要 Node.js 18 或更高版本」是上游技能 CLI 的要求，与本仓库无关。
 
 ## 目录结构
 
@@ -70,7 +70,7 @@ public/motion-prompt/            官方 runtime.js 与 8 组 packs/*.js
 
 - GitHub Pages（`build_type=workflow`），仓库 `bbylw/motion-prompt-cn`，`main` 分支推送或手动 `workflow_dispatch` 触发。
 - 单一工作流 `.github/workflows/deploy.yml`：`verify` job 对所有 main 推送、PR 与手动运行做依赖安装、catalog 漂移检查、Bun 运行时的类型检查（`bun --bun run check`）；`publish` job 仅在 main 或手动触发时构建并发布，Pages 写权限、`github-pages` environment、`SITE_URL` 与 `concurrency: pages` 都只作用在该 job。
-- 构建期注入 `SITE_URL=https://motion-prompt.ndjp.net`，使 canonical、OG 图、sitemap 与 robots 使用绝对地址；需要子路径部署时可再设置 `BASE_PATH`，站内链接统一经 `withBase()` 生成。
+- 构建期注入 `SITE_URL=https://motion-prompt.ndjp.net`（由 `astro.config.mjs` 经 `Bun.env` 读取），使 canonical、OG 图、sitemap 与 robots 使用绝对地址；需要子路径部署时可再设置 `BASE_PATH`，站内链接统一经 `withBase()` 生成。
 - 自定义域 `motion-prompt.ndjp.net`：DNS 为 4 条指向 GitHub Pages 官方 IP 的 A 记录，`public/CNAME` 随产物携带域名，Pages 侧已开启 `https_enforced`，HTTPS 证书状态为 approved。
 
 ## 设计与验收
@@ -83,5 +83,6 @@ public/motion-prompt/            官方 runtime.js 与 8 组 packs/*.js
 
 - 提交信息一律使用英文。
 - 类型检测、构建与开发服务器统一用 Bun 运行时执行（`--bun`），不要用 `npx` / `node` 运行 Astro CLI。
+- 源码不引入 `node:` 导入或 `process`：环境变量用 `Bun.env`，文件读写用 `Bun.file` / `Bun.write`，目录用 `import.meta.dir`。
 - `README.md` 只放上游 README 的中文译文；本项目说明写在本文件。
 - 所有链接指向上游仓库的绝对地址（本仓库不含 `packs/`、`assets/` 等上游目录）。

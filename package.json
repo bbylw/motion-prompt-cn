@@ -12,7 +12,7 @@
     "catalog": "bun scripts/build-catalog.mjs",
     "check": "bun --bun run astro check",
     "verify": "bun run check && bun run build",
-    "astro": "astro"
+    "astro": "bun --bun run ./node_modules/astro/bin/astro.mjs"
   },
   "dependencies": {
     "@fontsource/instrument-sans": "^5.3.0",
