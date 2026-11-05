@@ -1,11 +1,22 @@
 # Motion Prompt
 
-> 为「你让 AI 做的那些事」而准备的名称库。
+**简体中文** | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/README.md) | [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/README.ja.md)
 
-每个名称都配有一段动态示例、一行含义说明，以及一个如何向 AI 提出需求的示例。目前包含八组名称，每组 24 个，共 192 个：动效运动（`motion`）、镜头运动（`camera`）、UI 组件名称（`ui`）、落地页与网页效果（`lp`）、照片观感与灯光风格（`photo`）、动效运动・第二弹（`motion2`）、落地页与网页效果・第二弹（`lp2`）、镜头运动与转场・第二弹（`camera2`）。此外还附带了提示词，可用于为你的领域、你的语言制作同类名称库。
+> 本页是上游 README 的简体中文译文。
+> 日本語の説明は [README.ja.md](https://github.com/showheyohtaki/motion-prompt/blob/main/README.ja.md) にあります。
+> 中文用户：所有名称一览都有简体中文和繁體中文版本，见 [`packs/`](https://github.com/showheyohtaki/motion-prompt/tree/main/packs)。
+> En español: todas las listas de nombres están en español en [`packs/`](https://github.com/showheyohtaki/motion-prompt/tree/main/packs)。
+> 名称列表提供英语、日语、西班牙语、简体中文和繁體中文五种版本（见 [`packs/`](https://github.com/showheyohtaki/motion-prompt/tree/main/packs)）；图库提供英语和日语。若需要其他语言，可把 [`make-your-own/prompts/en/01-translate.md`](https://github.com/showheyohtaki/motion-prompt/blob/main/make-your-own/prompts/en/01-translate.md) 交给编程 AI。
+
+为「你让 AI 做的那些事」而准备的名称库。每个名称都配有一段动态示例、一行含义说明，以及一个如何向 AI 提出需求的示例。目前包含八组名称，每组 24 个，共 192 个：动效运动（`motion`）、镜头运动（`camera`）、UI 组件名称（`ui`）、落地页与网页效果（`lp`）、照片观感与灯光风格（`photo`）、动效运动・第二弹（`motion2`）、落地页与网页效果・第二弹（`lp2`）、镜头运动与转场・第二弹（`camera2`）。此外还附带了提示词，可用于为你的领域、你的语言制作同类名称库。
+
+| 动效运动 | 镜头运动 |
+|---|---|
+| ![动效运动名称 01–08](https://raw.githubusercontent.com/showheyohtaki/motion-prompt/main/assets/preview-motion.gif) | ![镜头运动名称 01–08](https://raw.githubusercontent.com/showheyohtaki/motion-prompt/main/assets/preview-camera.gif) |
 
 - 图库（所有示例，动态）：https://showheyohtaki.github.io/motion-prompt/
 - 名称列表（GitHub 上可阅读）：[`packs/`](https://github.com/showheyohtaki/motion-prompt/tree/main/packs)
+- 其他人分享的带示例名称案例（嵌入并链接到他们在 X 上的帖子）：https://showheyohtaki.github.io/motion-prompt/found.html
 
 ## 我为什么做这个
 
@@ -21,20 +32,20 @@
 
 ## 目前包含的名称
 
-| 编号 | Pack | 名称 | 说明 |
+| 编号 | Pack | 名称数 | 列表 |
 | :--- | :--- | :--- | :--- |
-| 001–024 | `motion` | 动效运动 | 元素的入场、强调、退场与循环运动 |
-| 025–048 | `camera` | 镜头运动与转场 | 推轨、摇镜、变焦与镜头切换 |
-| 049–072 | `ui` | UI 组件名称 | 按钮、菜单、卡片、导航、反馈 |
-| 073–096 | `lp` | 落地页与网页效果 | 滚动、视差、揭示、吸附、布局 |
-| 097–120 | `photo` | 照片观感与灯光风格 | 灯光、色调、氛围、胶片、观感 |
-| 121–144 | `motion2` | 动效运动・第二弹 | 更多元的动效与节奏变化 |
-| 145–168 | `lp2` | 落地页与网页效果・第二弹 | 更复杂的页面级效果与滚动交互 |
-| 169–192 | `camera2` | 镜头运动与转场・第二弹 | 更丰富的镜头语言与转场 |
+| 001–024 | `motion`：动效运动 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion/README.zh-Hant.md) |
+| 025–048 | `camera`：镜头运动与转场 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera/README.zh-Hant.md) |
+| 049–072 | `ui`：UI 组件名称 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/ui/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/ui/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/ui/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/ui/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/ui/README.zh-Hant.md) |
+| 073–096 | `lp`：落地页与网页效果 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp/README.zh-Hant.md) |
+| 097–120 | `photo`：照片观感与灯光风格 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/photo/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/photo/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/photo/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/photo/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/photo/README.zh-Hant.md) |
+| 121–144 | `motion2`：动效运动・第二弹 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion2/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion2/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion2/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion2/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/motion2/README.zh-Hant.md) |
+| 145–168 | `lp2`：落地页与网页效果・第二弹 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp2/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp2/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp2/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp2/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/lp2/README.zh-Hant.md) |
+| 169–192 | `camera2`：镜头运动与转场・第二弹 | 24 | [English](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera2/README.md) · [日本語](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera2/README.ja.md) · [Español](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera2/README.es.md) · [简体中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera2/README.zh-Hans.md) · [繁體中文](https://github.com/showheyohtaki/motion-prompt/blob/main/packs/camera2/README.zh-Hant.md) |
 
-每个列表都给出编号、名称、含义以及向 AI 提出需求的示例。同样的名称在[图库](https://showheyohtaki.github.io/motion-prompt/)中动态展示。
+每份列表都给出编号、名称、含义以及向 AI 提出需求的示例，并有英语、日语、西班牙语、简体中文和繁體中文版本。同样的名称在[图库](https://showheyohtaki.github.io/motion-prompt/)中动态展示。
 
-每个 Pack 有自己的观感。motion 和 motion2 是深藏青底色配四种颜色。camera 和 camera2 是浅灰底色配一种蓝色。ui 是暖白底色配黑色和一种蓝色，光标驱动各部分运动。lp 和 lp2 在浅灰桌面上画出白色浏览器窗口，配朱红强调色和页面图片的蓝色。photo 没有统一配色：每张卡片用其场景自身的颜色绘制，效果淡入再淡出以便比较。这是刻意的——Pack 要做对的是名称，不是固定风格。
+每个 Pack 有自己的观感。motion 和 motion2 是深藏青底色配四种颜色。camera 和 camera2 是浅灰底色配一种蓝色。ui 是暖白底色配黑色和一种蓝色，光标驱动各部分运动。lp 和 lp2 在浅灰桌面上画出白色浏览器窗口，配朱红强调色和页面图片的蓝色。photo 没有统一配色：每张卡片用其场景自身的颜色绘制，效果淡入再淡出以便比较。这是刻意的，Pack 要做对的是名称，不是固定风格。
 
 ## 三种使用方式
 
@@ -48,12 +59,12 @@ npx skills add showheyohtaki/motion-prompt
 
 1. 对 AI 说：
    ```text
-   打开 motion-prompt 名称库。
+   Open the motion-prompt library.
    ```
 2. 图库在浏览器中打开。在想要的示例上按「Pick」，可多选。屏幕底部的备注栏可输入简短说明，如「用于开场标题」。
 3. 按「Send to AI」，你的选择会发送给 AI。回到它并说明你想做什么：
    ```text
-   按这样编辑这个视频的开场。
+   Edit the opening of this video like this.
    ```
 
 Agent 只使用你挑选的内容。它获取规格和参考代码，按你项目的方式构建到你的视频或网站中。说出类别即可，如「给我看镜头运动」，图库会按该领域的 Pack 打开（如有第一弹和第二弹则一起显示）。
@@ -63,15 +74,15 @@ Agent 只使用你挑选的内容。它获取规格和参考代码，按你项�
 **知道编号时**，可跳过图库直接按编号请求：
 
 ```text
-使用 motion-prompt 技能的 #012 和 #045，让这个产品视频看起来更专业。
+Use the motion-prompt skill with #012 and #045 to make this product video look professional.
 ```
 
 ```text
-把标题出现的部分替换为 motion-prompt 的 #005。保留长度和前后的转场。
+Replace the part where the title appears with #005 from motion-prompt. Keep the length and the transitions before and after it.
 ```
 
 ```text
-把 motion-prompt #032 的镜头运动写成 Veo 的英文提示词。主体是桌上的一杯咖啡。
+Turn the camera move in motion-prompt #032 into an English prompt for Veo. The subject is a coffee cup on a desk.
 ```
 
 其他安装方式和 agent 的行为见下方[技能参考](#技能参考)。
@@ -106,6 +117,16 @@ Slow dolly in toward her face; move the camera, do not zoom.
 
 如果你熟悉某个领域，请在这里用你的语言添加它的共同语言。[CONTRIBUTING.md](https://github.com/showheyohtaki/motion-prompt/blob/main/CONTRIBUTING.md) 解释了如何添加 Pack 或为现有 Pack 添加语言，以及名称收录的标准。使用上述提示词，编程 AI 可完成大部分构建工作。
 
+## 原始帖子
+
+最初引发这个项目的短视频（X，日语）：
+
+- https://x.com/showheyohtaki/status/2108065874511077598
+- https://x.com/showheyohtaki/status/2109112248832503895
+- https://x.com/showheyohtaki/status/2109840044554891464
+
+第一条帖子里的那组名称（网站与落地页动效的名称）尚未收录进本仓库，`lp` 是另一组。部分名称与那条帖子重合（视差、滚动吸附等），但选名与示例都是为本仓库重新制作的。`ui` 基于 10 月 10 日发布在 X 上的「UIパーツ名24」，`photo` 同样是为本仓库新作的。
+
 ## 技能参考
 
 需要 Node.js 18 或更高版本。
@@ -124,6 +145,13 @@ Read https://github.com/showheyohtaki/motion-prompt and install the motion-promp
 npx skills add showheyohtaki/motion-prompt
 ```
 
+**作为 Claude Code 插件安装。**
+
+```text
+/plugin marketplace add showheyohtaki/motion-prompt
+/plugin install motion-prompt@motion-prompt
+```
+
 **手动安装。** 将 `skills/motion-prompt` 文件夹复制到以下位置之一：
 
 | 位置 | 范围 |
@@ -132,6 +160,33 @@ npx skills add showheyohtaki/motion-prompt
 | `~/.agents/skills/` | Codex 等，所有项目 |
 | 项目中的 `.claude/skills/` | Claude Code，仅该项目 |
 | 项目中的 `.agents/skills/` | Codex 等，仅该项目 |
+
+### 给 Agent 的安装步骤
+
+本节供收到上文「用提示词」那段指令的 AI agent 使用。
+
+1. 用 `node --version` 确认 Node.js 18 或更高版本可用。
+2. 在用户的项目目录执行下面的命令。若询问要安装给哪个 agent，选择你自己的那个。
+   ```sh
+   npx skills add showheyohtaki/motion-prompt -y
+   ```
+3. 若第 2 步无法执行，则拉取仓库并复制目录。Claude Code 复制到 `.claude/skills/`，其他 agent 复制到 `.agents/skills/`（或对全部项目使用 `~/.claude/skills/`、`~/.agents/skills/`）。
+   ```sh
+   git clone --depth 1 https://github.com/showheyohtaki/motion-prompt.git /tmp/motion-prompt
+   mkdir -p .claude/skills
+   cp -R /tmp/motion-prompt/skills/motion-prompt .claude/skills/
+   ```
+4. 确认安装结果。把 `<skill-dir>` 换成技能实际安装的位置（含 `SKILL.md` 的目录）。能打印出数据来源和元素数量即表示成功。
+   ```sh
+   node <skill-dir>/scripts/motion-prompt.mjs info
+   ```
+   退出码 3 表示无法访问数据源，取得网络权限后重试。
+5. 阅读 `<skill-dir>/SKILL.md`，用三行告诉用户怎么使用。例如：
+   - 说「打开 motion-prompt 名称库」，图库即会打开；在想要的示例上按「Pick」，再按「Send to AI」。
+   - 然后说明想做什么，例如「按这样编辑这个视频的开场」。
+   - 知道编号时也可以直接请求：「使用 #012 和 #045」。
+
+不要改动已有的设置文件或其他技能。
 
 ### Agent 的行为
 
