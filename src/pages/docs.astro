@@ -390,12 +390,17 @@ import { usageMethods, skillCommands } from '../data/packs';
   // Uses MotionPrompt.packs[packId].cells[index](ctx, w, h, u)
   // Each cell is a pure function of u (0 <= u < cycle seconds)
 
-  const canvases = Array.from(document.querySelectorAll('.name-preview-canvas')).map(canvas => {
+  const canvasEls = Array.from(document.querySelectorAll('.name-preview-canvas'));
+  const instances = [];
+  const instanceMap = new Map(); // canvas element -> instance
+
+  // Lazy initialization: only create ctx when canvas becomes visible
+  function initInstance(canvas) {
     const ctx = canvas.getContext('2d');
     const packId = canvas.dataset.pack;
     const index = parseInt(canvas.dataset.index, 10);
     const pack = MotionPrompt.packs[packId];
-    return {
+    const inst = {
       canvas,
       ctx,
       w: canvas.width,
@@ -403,19 +408,27 @@ import { usageMethods, skillCommands } from '../data/packs';
       packId,
       index,
       pack,
-      visible: false
+      visible: false,
+      initialized: true
     };
-  });
+    instances.push(inst);
+    instanceMap.set(canvas, inst);
+    return inst;
+  }
 
-  // IntersectionObserver: only render visible canvases
+  // IntersectionObserver: lazily init and render only visible canvases
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const inst = canvases.find(c => c.canvas === entry.target);
+      const canvas = entry.target;
+      let inst = instanceMap.get(canvas);
+      if (!inst && entry.isIntersecting) {
+        inst = initInstance(canvas);
+      }
       if (inst) inst.visible = entry.isIntersecting;
     });
-  }, { rootMargin: '100px' });
+  }, { rootMargin: '200px' }); // 扩大预加载范围，避免快速滚动时闪烁
 
-  canvases.forEach(inst => observer.observe(inst.canvas));
+  canvasEls.forEach(canvas => observer.observe(canvas));
 
   // Shared rAF loop
   let startTime = null;
@@ -424,15 +437,17 @@ import { usageMethods, skillCommands } from '../data/packs';
     if (startTime === null) startTime = timestamp;
     const elapsed = (timestamp - startTime) / 1000; // seconds
 
-    canvases.forEach(inst => {
-      if (!inst.visible || !inst.pack) return;
+    // 只遍历已初始化的实例
+    for (let i = 0; i < instances.length; i++) {
+      const inst = instances[i];
+      if (!inst.visible || !inst.pack) continue;
 
       const cycle = inst.pack.cycle;
       const u = (elapsed % cycle); // 0 <= u < cycle seconds
 
       inst.ctx.clearRect(0, 0, inst.w, inst.h);
       inst.pack.cells[inst.index](inst.ctx, inst.w, inst.h, u);
-    });
+    }
 
     requestAnimationFrame(animate);
   }
