@@ -3,14 +3,14 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.23.4"
+    "bun": ">=1.4.4"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
+    "dev": "bun --bun run astro dev",
+    "build": "bun --bun run astro build",
+    "preview": "bun --bun run astro preview",
     "catalog": "bun scripts/build-catalog.mjs",
-    "check": "astro check",
+    "check": "bun --bun run astro check",
     "verify": "bun run check && bun run build",
     "astro": "astro"
   },
