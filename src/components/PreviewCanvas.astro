@@ -1,0 +1,168 @@
+---
+interface Props {
+  pack: string;
+  index: number;
+  width: number;
+  height: number;
+  label?: string;
+}
+
+const { pack, index, width, height, label = '' } = Astro.props;
+---
+
+<div
+  data-motion-placeholder
+  data-pack={pack}
+  data-index={index}
+  data-width={width}
+  data-height={height}
+  class="w-full"
+  style={`aspect-ratio: ${width}/${height}`}
+  role="img"
+  aria-label={label || `${pack} 第 ${index + 1} 个动效示例`}
+></div>
+
+<script>
+  // Astro bundles this script once per page, however many previews are rendered.
+  // The canvas element itself is created only when its placeholder nears the viewport.
+  type Cell = (ctx: CanvasRenderingContext2D, w: number, h: number, u: number) => void;
+  type Pack = { cycle: number; cells: Cell[] };
+  type Registry = { packs: Record<string, Pack> };
+  type Instance = {
+    ctx: CanvasRenderingContext2D;
+    w: number;
+    h: number;
+    pack: Pack;
+    index: number;
+    visible: boolean;
+  };
+
+  const base = import.meta.env.BASE_URL || '/';
+  const host = window as Window & { MotionPrompt?: Registry };
+
+  function loadScript(src: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const el = document.createElement('script');
+      el.src = src;
+      el.onload = () => resolve();
+      el.onerror = () => reject(new Error(`加载失败：${src}`));
+      document.head.appendChild(el);
+    });
+  }
+
+  const runtimeReady = host.MotionPrompt
+    ? Promise.resolve()
+    : loadScript(`${base}motion-prompt/runtime.js`);
+  const packLoading = new Map<string, Promise<void>>();
+
+  async function ensurePack(id: string): Promise<Pack | null> {
+    await runtimeReady;
+    let loading = packLoading.get(id);
+    if (!loading) {
+      loading = loadScript(`${base}motion-prompt/packs/${id}.js`).catch((error: unknown) => {
+        packLoading.delete(id);
+        throw error;
+      });
+      packLoading.set(id, loading);
+    }
+    try {
+      await loading;
+    } catch {
+      return null;
+    }
+    return host.MotionPrompt?.packs[id] ?? null;
+  }
+
+  const placeholders = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-motion-placeholder]'),
+  );
+
+  if (placeholders.length > 0) {
+    const instances: Instance[] = [];
+    const byElement = new WeakMap<HTMLElement, Instance>();
+    const loadingElement = new WeakSet<HTMLElement>();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let rafId: number | null = null;
+    let startTime: number | null = null;
+
+    const draw = (inst: Instance, u: number) => {
+      inst.ctx.clearRect(0, 0, inst.w, inst.h);
+      inst.pack.cells[inst.index](inst.ctx, inst.w, inst.h, u);
+    };
+    const drawStatic = (inst: Instance) => draw(inst, inst.pack.cycle * 0.45);
+
+    const tick = (timestamp: number) => {
+      rafId = null;
+      if (startTime === null) startTime = timestamp;
+      const elapsed = (timestamp - startTime) / 1000;
+      let active = 0;
+      for (const inst of instances) {
+        if (!inst.visible) continue;
+        active += 1;
+        draw(inst, elapsed % inst.pack.cycle);
+      }
+      if (active > 0 && !reduce.matches) rafId = requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+      if (!reduce.matches && rafId === null) rafId = requestAnimationFrame(tick);
+    };
+
+    const isNearViewport = (element: HTMLElement) => {
+      const rect = element.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return false;
+      return rect.bottom > -150 && rect.top < window.innerHeight + 150;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      void (async () => {
+        for (const entry of entries) {
+          const placeholder = entry.target as HTMLElement;
+          let inst = byElement.get(placeholder);
+          if (!inst && !loadingElement.has(placeholder) && isNearViewport(placeholder)) {
+            loadingElement.add(placeholder);
+            const pack = await ensurePack(placeholder.dataset.pack || 'motion');
+            const index = Number(placeholder.dataset.index ?? 0);
+            if (pack?.cells[index]) {
+              const canvas = document.createElement('canvas');
+              canvas.width = Number(placeholder.dataset.width ?? 539);
+              canvas.height = Number(placeholder.dataset.height ?? 208);
+              canvas.className = 'block w-full h-full';
+              canvas.setAttribute('aria-hidden', 'true');
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                placeholder.appendChild(canvas);
+                inst = {
+                  ctx,
+                  w: canvas.width,
+                  h: canvas.height,
+                  pack,
+                  index,
+                  visible: true,
+                };
+                instances.push(inst);
+                byElement.set(placeholder, inst);
+                if (reduce.matches) drawStatic(inst);
+              }
+            }
+            loadingElement.delete(placeholder);
+          }
+          if (inst) inst.visible = isNearViewport(placeholder);
+        }
+        start();
+      })();
+    }, { rootMargin: '150px' });
+
+    placeholders.forEach((placeholder) => observer.observe(placeholder));
+
+    reduce.addEventListener('change', () => {
+      if (reduce.matches) {
+        if (rafId !== null) cancelAnimationFrame(rafId);
+        rafId = null;
+        for (const inst of instances) if (inst.visible) drawStatic(inst);
+      } else {
+        start();
+      }
+    });
+  }
+</script>

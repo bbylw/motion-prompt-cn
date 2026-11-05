@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { siteStats, withBase } from '../data/site';
 ---
 
 <footer class="border-t border-white/[0.06] bg-ink-950 relative overflow-hidden">
@@ -13,15 +14,15 @@ import Icon from './Icon.astro';
           </div>
           <span class="font-display font-semibold text-white text-lg">Motion Prompt</span>
         </div>
-        <p class="text-sm text-white/35 leading-relaxed max-w-sm mb-6">
-          一套为「你让 AI 做的那些事」而准备的名称库。192 个名称，八组分类，配动态示例、含义说明与提示词。让全世界有更多创意总监，与 AI 一起做出出色的作品。
+        <p class="text-sm text-white/60 leading-relaxed max-w-sm mb-6">
+          一套为「你让 AI 做的那些事」而准备的名称库。{siteStats.total} 个名称，{siteStats.packCount} 组分类，配动态示例、含义说明与提示词。让全世界有更多创意总监，与 AI 一起做出出色的作品。
         </p>
         <div class="flex items-center gap-2">
           <a
             href="https://github.com/showheyohtaki/motion-prompt"
             target="_blank"
             rel="noopener noreferrer"
-            class="p-2.5 rounded-lg bg-white/[0.04] text-white/35 hover:text-white hover:bg-white/[0.08] transition-all duration-150"
+            class="p-2.5 rounded-lg bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08] transition-all duration-150"
             aria-label="GitHub"
           >
             <Icon name="github" size={16} strokeWidth={1.5} />
@@ -30,7 +31,7 @@ import Icon from './Icon.astro';
             href="https://x.com/showheyohtaki"
             target="_blank"
             rel="noopener noreferrer"
-            class="p-2.5 rounded-lg bg-white/[0.04] text-white/35 hover:text-white hover:bg-white/[0.08] transition-all duration-150"
+            class="p-2.5 rounded-lg bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08] transition-all duration-150"
             aria-label="X"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -44,9 +45,9 @@ import Icon from './Icon.astro';
       <div class="md:col-span-2">
         <h4 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">导航</h4>
         <ul class="space-y-2.5 text-sm">
-          <li><a href="/" class="text-white/35 hover:text-white transition-colors duration-150">首页</a></li>
-          <li><a href="/#usage" class="text-white/35 hover:text-white transition-colors duration-150">使用方式</a></li>
-          <li><a href="/docs" class="text-white/35 hover:text-white transition-colors duration-150">文档</a></li>
+          <li><a href={withBase("/")} class="text-white/60 hover:text-white transition-colors duration-150">首页</a></li>
+          <li><a href={`${withBase("/")}#usage`} class="text-white/60 hover:text-white transition-colors duration-150">使用方式</a></li>
+          <li><a href={withBase("/docs")} class="text-white/60 hover:text-white transition-colors duration-150">文档</a></li>
         </ul>
       </div>
 
@@ -54,20 +55,20 @@ import Icon from './Icon.astro';
       <div class="md:col-span-3">
         <h4 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">资源</h4>
         <ul class="space-y-2.5 text-sm">
-          <li><a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener noreferrer" class="text-white/35 hover:text-white transition-colors duration-150">GitHub 仓库</a></li>
-          <li><a href="https://showheyohtaki.github.io/motion-prompt/" target="_blank" rel="noopener noreferrer" class="text-white/35 hover:text-white transition-colors duration-150">动态图库</a></li>
-          <li><a href="https://showheyohtaki.github.io/motion-prompt/found.html" target="_blank" rel="noopener noreferrer" class="text-white/35 hover:text-white transition-colors duration-150">投稿案例</a></li>
-          <li><a href="https://github.com/showheyohtaki/motion-prompt/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="text-white/35 hover:text-white transition-colors duration-150">参与贡献</a></li>
+          <li><a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors duration-150">GitHub 仓库</a></li>
+          <li><a href="https://showheyohtaki.github.io/motion-prompt/" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors duration-150">动态图库</a></li>
+          <li><a href="https://showheyohtaki.github.io/motion-prompt/found.html" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors duration-150">投稿案例</a></li>
+          <li><a href="https://github.com/showheyohtaki/motion-prompt/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors duration-150">参与贡献</a></li>
         </ul>
       </div>
 
       <!-- License -->
       <div class="md:col-span-2">
         <h4 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">许可</h4>
-        <p class="text-sm text-white/35 leading-relaxed">
+        <p class="text-sm text-white/60 leading-relaxed">
           MIT License<br />© 2026 Shohei Ohtaki
         </p>
-        <p class="text-xs text-white/20 mt-3">
+        <p class="text-xs text-white/50 mt-3">
           允许商业使用
         </p>
       </div>
@@ -75,10 +76,10 @@ import Icon from './Icon.astro';
 
     <!-- Bottom bar -->
     <div class="mt-12 pt-8 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-xs text-white/20">
+      <p class="text-xs text-white/50">
         Motion Prompt — 让全世界有更多创意总监
       </p>
-      <div class="flex items-center gap-2 text-xs text-white/20">
+      <div class="flex items-center gap-2 text-xs text-white/50">
         <Icon name="award" size={12} strokeWidth={1.5} />
         <span>简体中文版 · 基于官方文档构建</span>
       </div>

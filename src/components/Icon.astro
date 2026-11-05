@@ -3,10 +3,11 @@ interface Props {
   name: string;
   size?: number;
   class?: string;
+  style?: string;
   strokeWidth?: number;
 }
 
-const { name, size = 24, class: className = '', strokeWidth = 2 } = Astro.props;
+const { name, size = 24, class: className = '', style, strokeWidth = 2 } = Astro.props;
 
 const icons: Record<string, string> = {
   play: `<polygon points="6 3 20 12 6 21 6 3"/>`,
@@ -71,7 +72,8 @@ const icons: Record<string, string> = {
   more: `<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>`,
 };
 
-const svg = icons[name] || icons.info;
+const svg = icons[name];
+if (!svg) throw new Error(`未知图标：${name}`);
 ---
 
 <svg
@@ -84,6 +86,7 @@ const svg = icons[name] || icons.info;
   stroke-linecap="round"
   stroke-linejoin="round"
   class={className}
+  style={style}
   aria-hidden="true"
   set:html={svg}
 />

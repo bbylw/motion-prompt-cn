@@ -1,4 +1,4 @@
-// Auto-generated from official catalog.js — do not edit manually
+// Auto-generated from data/motion-prompt-catalog.js by scripts/build-catalog.mjs — do not edit manually
 export interface CatalogElement {
   id: string;
   pack: string;
@@ -15,6 +15,7 @@ export interface CatalogPack {
   order: number;
   name: string;
   count: number;
+  langs: string[];
   width: number;
   height: number;
   cycle: number;
@@ -27,6 +28,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 1,
     "name": "动态图形",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 539,
     "height": 208,
     "cycle": 4.7,
@@ -50,6 +58,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 2,
     "name": "镜头运动与转场",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 539,
     "height": 208,
     "cycle": 9.4,
@@ -73,6 +88,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 3,
     "name": "UI 组件",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 542,
     "height": 191,
     "cycle": 4.5,
@@ -96,6 +118,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 4,
     "name": "落地页与网页效果",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 539,
     "height": 208,
     "cycle": 4.8,
@@ -119,6 +148,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 5,
     "name": "摄影效果、光线与风格",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 539,
     "height": 208,
     "cycle": 5,
@@ -142,6 +178,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 6,
     "name": "动态图形（第 2 弹）",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 539,
     "height": 208,
     "cycle": 4.7,
@@ -165,6 +208,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 7,
     "name": "落地页与网页效果（第 2 弹）",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 539,
     "height": 208,
     "cycle": 9.4,
@@ -188,6 +238,13 @@ export const catalogPacks: CatalogPack[] = [
     "order": 8,
     "name": "镜头运动与转场（第 2 弹）",
     "count": 24,
+    "langs": [
+      "en",
+      "es",
+      "ja",
+      "zh-Hans",
+      "zh-Hant"
+    ],
     "width": 539,
     "height": 208,
     "cycle": 9.4,

@@ -1,10 +1,12 @@
 ---
 import Icon from './Icon.astro';
+import { siteStats, withBase, stripBase } from '../data/site';
 
+const currentPath = stripBase(Astro.url.pathname);
 const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Usage', href: '/#usage' },
-  { label: 'Docs', href: '/docs' },
+  { label: 'Home', href: withBase('/'), path: '/' },
+  { label: 'Usage', href: `${withBase('/')}#usage`, path: '' },
+  { label: 'Docs', href: withBase('/docs'), path: '/docs' },
 ];
 ---
 
@@ -12,13 +14,13 @@ const navItems = [
   <div class="backdrop-blur-xl bg-ink-950/80 border-b border-white/[0.06]">
     <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <!-- Brand -->
-      <a href="/" class="flex items-center gap-3 group">
+      <a href={withBase("/")} class="flex items-center gap-3 group">
         <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center transition-transform duration-150 group-hover:scale-105">
           <Icon name="play" size={14} class="text-ink-950 ml-0.5" strokeWidth={2.5} />
         </div>
         <div class="flex flex-col">
           <span class="font-display font-semibold text-white leading-none text-[15px]">Motion Prompt</span>
-          <span class="text-[10px] text-white/25 leading-none mt-1 tracking-wide">192 Names for AI</span>
+          <span class="text-[10px] text-white/55 leading-none mt-1 tracking-wide">{siteStats.total} Names for AI</span>
         </div>
       </a>
 
@@ -27,7 +29,13 @@ const navItems = [
         {navItems.map((item) => (
           <a
             href={item.href}
-            class="nav-link px-4 py-2 text-sm text-white/45 hover:text-white transition-colors duration-150 rounded-lg hover:bg-white/[0.04]"
+            aria-current={item.path === currentPath ? 'page' : undefined}
+            class:list={[
+              'nav-link px-4 py-2 text-sm transition-colors duration-150 rounded-lg',
+              item.path === currentPath
+                ? 'text-white bg-white/[0.06]'
+                : 'text-white/60 hover:text-white hover:bg-white/[0.04]',
+            ]}
           >
             {item.label}
           </a>
@@ -40,19 +48,11 @@ const navItems = [
           href="https://github.com/showheyohtaki/motion-prompt"
           target="_blank"
           rel="noopener noreferrer"
-          class="hidden md:flex items-center gap-2 px-3 py-2 text-sm text-white/40 hover:text-white transition-colors duration-150 rounded-lg hover:bg-white/[0.04]"
+          class="hidden md:flex items-center gap-2 px-3 py-2 text-sm text-white/65 hover:text-white transition-colors duration-150 rounded-lg hover:bg-white/[0.04]"
           aria-label="GitHub"
         >
           <Icon name="github" size={16} strokeWidth={1.5} />
         </a>
-        <a
-          href="/docs"
-          class="magnetic-btn hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-lg bg-accent text-ink-950 hover:bg-accent-hover transition-colors duration-150 press"
-        >
-          Browse Docs
-          <Icon name="arrowRight" size={14} strokeWidth={2.5} />
-        </a>
-
         <!-- Mobile menu button -->
         <button
           id="mobile-menu-btn"
@@ -72,7 +72,13 @@ const navItems = [
         {navItems.map((item) => (
           <a
             href={item.href}
-            class="mobile-nav-link block px-4 py-3 text-sm text-white/55 hover:text-white hover:bg-white/[0.04] rounded-lg transition-all"
+            aria-current={item.path === currentPath ? 'page' : undefined}
+            class:list={[
+              'mobile-nav-link block px-4 py-3 text-sm rounded-lg transition-all',
+              item.path === currentPath
+                ? 'text-white bg-white/[0.06]'
+                : 'text-white/55 hover:text-white hover:bg-white/[0.04]',
+            ]}
           >
             {item.label}
           </a>
@@ -92,49 +98,24 @@ const navItems = [
 </header>
 
 <script>
-  // Mobile menu toggle
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
+
   if (btn && menu) {
     btn.addEventListener('click', () => {
       const isHidden = menu.classList.toggle('hidden');
       btn.setAttribute('aria-expanded', String(!isHidden));
     });
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
   }
 
-  // Magnetic button effect
-  const magneticBtns = document.querySelectorAll('.magnetic-btn');
-  magneticBtns.forEach((btn) => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - (rect.left + rect.width / 2);
-      const y = e.clientY - (rect.top + rect.height / 2);
-      btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = 'translate(0, 0)';
-    });
-  });
-
-  // Nav link active state
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      navLinks.forEach((l) => l.classList.remove('text-white', 'bg-white/[0.06]'));
-      link.classList.add('text-white', 'bg-white/[0.06]');
-    });
-  });
-
-  // Scroll effect on navbar
   const navbar = document.getElementById('navbar');
-  let lastScroll = 0;
   window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    if (currentScroll > 10) {
-      navbar?.classList.add('shadow-lg');
-    } else {
-      navbar?.classList.remove('shadow-lg');
-    }
-    lastScroll = currentScroll;
+    navbar?.classList.toggle('shadow-lg', window.scrollY > 10);
   }, { passive: true });
 </script>

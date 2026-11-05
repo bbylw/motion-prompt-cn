@@ -1,11 +1,11 @@
 @import "tailwindcss";
-@import "@fontsource/space-grotesk/500.css";
-@import "@fontsource/space-grotesk/600.css";
-@import "@fontsource/space-grotesk/700.css";
-@import "@fontsource/instrument-sans/400.css";
-@import "@fontsource/instrument-sans/500.css";
-@import "@fontsource/instrument-sans/600.css";
-@import "@fontsource/instrument-sans/700.css";
+@import "@fontsource/space-grotesk/latin-500.css";
+@import "@fontsource/space-grotesk/latin-600.css";
+@import "@fontsource/space-grotesk/latin-700.css";
+@import "@fontsource/instrument-sans/latin-400.css";
+@import "@fontsource/instrument-sans/latin-500.css";
+@import "@fontsource/instrument-sans/latin-600.css";
+@import "@fontsource/instrument-sans/latin-700.css";
 
 @theme {
   /* Typography: distinctive pairing — display + body */
@@ -89,8 +89,27 @@
   }
 }
 
+:root {
+  --nav-height: 4rem;
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+/* Fixed navbar and the sticky docs filter must not cover anchor targets. */
+section[id] {
+  scroll-margin-top: calc(var(--nav-height) + 1.5rem);
+}
+
+.name-card[id] {
+  scroll-margin-top: 12rem;
+}
+
+@media (max-width: 767px) {
+  .name-card[id] {
+    scroll-margin-top: 16rem;
+  }
 }
 
 body {
@@ -167,8 +186,8 @@ body {
   background-color: oklch(1 0 0 / 0.04);
 }
 
-/* Utility: focus ring */
-.focus-ring:focus-visible {
+/* Keyboard focus: visible on every interactive element */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }

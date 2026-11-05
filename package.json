@@ -9,6 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "catalog": "bun scripts/build-catalog.mjs",
+    "check": "astro check",
+    "verify": "bun run check && bun run build",
     "astro": "astro"
   },
   "dependencies": {
@@ -17,7 +20,10 @@
     "astro": "^7.4.5"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "@tailwindcss/vite": "^4.3.4",
-    "tailwindcss": "^4.3.4"
+    "@types/node": "^22",
+    "tailwindcss": "^4.3.4",
+    "typescript": "^6"
   }
 }

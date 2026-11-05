@@ -5,6 +5,10 @@ import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
 import MotionPreview from '../components/MotionPreview.astro';
 import { packs, usageMethods } from '../data/packs';
+import { catalogElements } from '../data/catalog';
+import { siteStats, packRange, packExamples, marqueeNames, withBase } from '../data/site';
+
+const showcaseIndices = [0, 1, 3, 4, 5, 6];
 ---
 
 <BaseLayout title="Motion Prompt — 为 AI 而准备的动效名称库">
@@ -23,22 +27,22 @@ import { packs, usageMethods } from '../data/packs';
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <!-- Left: main content -->
           <div class="lg:col-span-7">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-8 stagger-item">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-8 stagger-item">
               <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              <span>192 个名称 · 8 组分类 · 5 种语言版本</span>
+              <span>{siteStats.total} 个名称 · {siteStats.packCount} 组分类 · {siteStats.languages} 种语言版本</span>
             </div>
 
             <h1 class="text-display text-5xl md:text-6xl lg:text-7xl text-white mb-8 stagger-item">
               为「你让 AI 做的那些事」而准备的名称库
             </h1>
 
-            <p class="text-body text-white/40 text-lg mb-10 stagger-item">
+            <p class="text-body text-white/65 text-lg mb-10 stagger-item">
               每个名称都配有一段动态示例、一行含义说明，以及一个如何向 AI 提出需求的示例。涵盖动效运动、镜头运动、UI 组件、落地页效果与照片观感。
             </p>
 
             <div class="flex flex-wrap items-center gap-4 stagger-item">
               <a
-                href="/docs"
+                href={withBase("/docs")}
                 class="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-accent text-ink-950 font-semibold hover:bg-accent-hover transition-colors duration-150 press"
               >
                 浏览完整文档
@@ -60,14 +64,14 @@ import { packs, usageMethods } from '../data/packs';
               <div class="relative p-6 rounded-2xl bg-ink-900 border border-white/[0.08] card-shadow">
                 <div class="space-y-1">
                   {[
-                    { value: '192', label: '名称总数', sub: '8 组 × 24 个' },
-                    { value: '5', label: '语言版本', sub: '中 · 英 · 日 · 西 · 繁' },
+                    { value: String(siteStats.total), label: '名称总数', sub: `${siteStats.packCount} 组 × ${siteStats.perPack} 个` },
+                    { value: String(siteStats.languages), label: '语言版本', sub: '中 · 英 · 日 · 西 · 繁' },
                     { value: 'MIT', label: '开源许可', sub: '允许商业使用' },
                   ].map((stat, i) => (
                     <div class:list={['flex items-center justify-between py-4', i < 2 ? 'border-b border-white/[0.06]' : '']}>
                       <div>
-                        <div class="text-xs text-white/30 mb-1">{stat.label}</div>
-                        <div class="text-sm text-white/40">{stat.sub}</div>
+                        <div class="text-xs text-white/55 mb-1">{stat.label}</div>
+                        <div class="text-sm text-white/65">{stat.sub}</div>
                       </div>
                       <div class="font-display text-3xl font-semibold text-white">{stat.value}</div>
                     </div>
@@ -85,30 +89,31 @@ import { packs, usageMethods } from '../data/packs';
       <div class="max-w-6xl mx-auto px-6">
         <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div class="max-w-xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
               <Icon name="play" size={12} strokeWidth={1.5} />
               动态示例
             </div>
             <h2 class="text-display text-3xl md:text-4xl text-white mb-3">
               看看这些名称长什么样
             </h2>
-            <p class="text-body text-white/35">
+            <p class="text-body text-white/60">
               每一个名称都是一种可复现的运动语言。以下是其中 6 种的实际效果。
             </p>
           </div>
-          <a href="/docs" class="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/60 transition-colors duration-150 shrink-0">
-            查看全部 192 个名称
+          <a href={withBase("/docs")} class="inline-flex items-center gap-2 text-sm text-white/65 hover:text-white transition-colors duration-150 shrink-0">
+            查看全部 {siteStats.total} 个名称
             <Icon name="arrowRight" size={14} strokeWidth={1.5} />
           </a>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <MotionPreview pack="motion" index={0} label="弹性入场 Pop-in" />
-          <MotionPreview pack="motion" index={1} label="交错动画 Stagger" />
-          <MotionPreview pack="motion" index={3} label="线条描绘 Line Draw" />
-          <MotionPreview pack="motion" index={4} label="遮罩显现 Mask Reveal" />
-          <MotionPreview pack="motion" index={5} label="打字机效果 Typewriter" />
-          <MotionPreview pack="motion" index={6} label="数字递增 Count-up" />
+          {showcaseIndices.map((index) => (
+            <MotionPreview
+              pack="motion"
+              index={index}
+              label={`${catalogElements[index].name} ${catalogElements[index].nameEn}`}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -116,10 +121,10 @@ import { packs, usageMethods } from '../data/packs';
     <!-- Marquee -->
     <section class="py-6 border-b border-white/[0.06] overflow-hidden marquee">
       <div class="flex whitespace-nowrap animate-marquee marquee-content">
-        {[0, 1].map((copy) => (
-          <div class="flex items-center gap-8 pr-8" key={copy}>
-            {['Mask Reveal', 'Slow Dolly In', 'Magnetic Button', 'Scroll Reveal', 'Golden Hour', 'Spring Overshoot', 'Split Screen', 'Orbit Arc', 'Typewriter', 'Crane Up', 'Card Flip', 'Parallax Layers', 'Neon Noir', 'Line Draw', 'Whip Pan', 'Sticky Stack'].map((name) => (
-              <span class="flex items-center gap-3 text-xs text-white/20 font-mono">
+        {[0, 1].map(() => (
+          <div class="flex items-center gap-8 pr-8">
+            {marqueeNames.map((name) => (
+              <span class="flex items-center gap-3 text-xs text-white/50 font-mono">
                 <span class="w-1 h-1 rounded-full bg-accent/40"></span>
                 {name}
               </span>
@@ -133,14 +138,14 @@ import { packs, usageMethods } from '../data/packs';
     <section id="packs" class="py-24">
       <div class="max-w-6xl mx-auto px-6">
         <div class="mb-12 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
             <Icon name="grid" size={12} strokeWidth={1.5} />
             八组分类
           </div>
           <h2 class="text-display text-4xl md:text-5xl text-white mb-4">
             每组 24 个名称
           </h2>
-          <p class="text-body text-white/35">
+          <p class="text-body text-white/60">
             各有自己的观感与配色。一个分组要做对的是名称，而不是某种固定风格。
           </p>
         </div>
@@ -148,13 +153,13 @@ import { packs, usageMethods } from '../data/packs';
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {packs.map((pack, i) => (
             <a
-              href={`/docs#${pack.id}`}
+              href={`${withBase("/docs")}#${pack.id}`}
               class="group relative p-6 rounded-2xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 card-shadow stagger-item"
               style={`animation-delay: ${i * 80}ms`}
             >
               <!-- Index -->
               <div class="flex items-start justify-between mb-4">
-                <span class="text-[11px] font-mono text-white/25">{pack.index}</span>
+                <span class="text-[11px] font-mono text-white/55">{packRange(pack.id)}</span>
                 <span class="w-1.5 h-1.5 rounded-full" style={`background-color: ${pack.color}`}></span>
               </div>
 
@@ -162,16 +167,16 @@ import { packs, usageMethods } from '../data/packs';
               <h3 class="font-display text-xl font-semibold text-white mb-1">
                 {pack.name}
               </h3>
-              <p class="text-[11px] text-white/25 font-mono mb-4">{pack.subtitle}</p>
+              <p class="text-[11px] text-white/55 font-mono mb-4">{pack.subtitle}</p>
 
               <!-- Description -->
-              <p class="text-sm text-white/35 leading-relaxed mb-5">
+              <p class="text-sm text-white/60 leading-relaxed mb-5">
                 {pack.description}
               </p>
 
               <!-- Examples -->
               <div class="space-y-1.5 mb-5">
-                {pack.examples.slice(0, 2).map((ex) => (
+                {packExamples(pack.id).map((ex) => (
                   <div class="flex items-center gap-2 text-xs font-mono" style={`color: ${pack.color}80`}>
                     <Icon name="zap" size={9} strokeWidth={2} />
                     {ex}
@@ -182,7 +187,7 @@ import { packs, usageMethods } from '../data/packs';
               <!-- Tags -->
               <div class="flex flex-wrap gap-1.5">
                 {pack.tags.slice(0, 3).map((tag) => (
-                  <span class="px-2 py-0.5 text-[11px] rounded-md bg-white/[0.04] text-white/30">
+                  <span class="px-2 py-0.5 text-[11px] rounded-md bg-white/[0.04] text-white/55">
                     {tag}
                   </span>
                 ))}
@@ -198,17 +203,17 @@ import { packs, usageMethods } from '../data/packs';
       <div class="max-w-6xl mx-auto px-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
               <Icon name="sparkles" size={12} strokeWidth={1.5} />
               为什么做这个
             </div>
             <h2 class="text-display text-3xl md:text-4xl text-white mb-6">
               限制人们的不是缺乏想象力，而是不知道这种运动叫什么
             </h2>
-            <p class="text-body text-white/35 mb-6">
+            <p class="text-body text-white/60 mb-6">
               我发布了几段短视频，给动效运动和镜头运动配上名称，接下来几天收到了大量评论。其中一条的大意是：一直限制着他们的并不是缺乏想象力，而是不知道这种运动叫什么。
             </p>
-            <p class="text-body text-white/35">
+            <p class="text-body text-white/60">
               读完这条评论我想：如果由熟悉各自领域的人，用多种语言，把「为了和 AI 良好协作所需的共同语言」整理成一套可供翻阅的库，那会非常有用。
             </p>
           </div>
@@ -228,9 +233,9 @@ import { packs, usageMethods } from '../data/packs';
                     </div>
                     <div class="flex-1 min-w-0">
                       <div class="text-sm font-medium text-white truncate">{item.name}</div>
-                      <div class="text-[11px] text-white/25">{item.pack}</div>
+                      <div class="text-[11px] text-white/55">{item.pack}</div>
                     </div>
-                    <Icon name="arrowUpRight" size={14} strokeWidth={1.5} class="text-white/15 group-hover:text-white/40 transition-colors duration-150 shrink-0" />
+                    <Icon name="arrowUpRight" size={14} strokeWidth={1.5} class="text-white/50 group-hover:text-white/65 transition-colors duration-150 shrink-0" />
                   </div>
                 ))}
               </div>
@@ -244,14 +249,14 @@ import { packs, usageMethods } from '../data/packs';
     <section id="usage" class="py-20">
       <div class="max-w-6xl mx-auto px-6">
         <div class="mb-12 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/45 mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
             <Icon name="book" size={12} strokeWidth={1.5} />
             使用方式
           </div>
           <h2 class="text-display text-4xl md:text-5xl text-white mb-4">
             三种方式，任选其一
           </h2>
-          <p class="text-body text-white/35">
+          <p class="text-body text-white/60">
             无论你是用编程 AI、视频生成模型，还是写需求简报，都能用这些名称准确表达。
           </p>
         </div>
@@ -267,15 +272,15 @@ import { packs, usageMethods } from '../data/packs';
                   <div class="flex items-center gap-3 mb-3">
                     <h3 class="font-display text-xl font-semibold text-white">{method.title}</h3>
                   </div>
-                  <p class="text-sm text-white/35 leading-relaxed mb-4">
+                  <p class="text-sm text-white/60 leading-relaxed mb-4">
                     {method.description}
                   </p>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <ol class="space-y-2">
                       {method.steps.map((step, i) => (
-                        <li class="flex items-start gap-2.5 text-sm text-white/40">
-                          <span class="w-5 h-5 rounded-full bg-white/[0.04] flex items-center justify-center text-[11px] text-white/40 shrink-0 mt-0.5">
+                        <li class="flex items-start gap-2.5 text-sm text-white/65">
+                          <span class="w-5 h-5 rounded-full bg-white/[0.04] flex items-center justify-center text-[11px] text-white/65 shrink-0 mt-0.5">
                             {i + 1}
                           </span>
                           {step}
@@ -286,8 +291,8 @@ import { packs, usageMethods } from '../data/packs';
                     {method.code && (
                       <div class="p-4 rounded-xl bg-ink-950 border border-white/[0.06] font-mono text-xs text-white/50 overflow-x-auto self-start">
                         <div class="flex items-center gap-2 mb-2">
-                          <Icon name="terminal" size={11} strokeWidth={1.5} class="text-white/20" />
-                          <span class="text-white/20">terminal</span>
+                          <Icon name="terminal" size={11} strokeWidth={1.5} class="text-white/50" />
+                          <span class="text-white/50">terminal</span>
                         </div>
                         {method.code}
                       </div>
@@ -311,12 +316,12 @@ import { packs, usageMethods } from '../data/packs';
             <h2 class="text-display text-3xl md:text-5xl text-white mb-6">
               开始用名称和 AI 对话
             </h2>
-            <p class="text-body text-white/35 mb-10 max-w-lg mx-auto">
+            <p class="text-body text-white/60 mb-10 max-w-lg mx-auto">
               打开名称库，挑选你想要的示例，发送给 AI。或者直接按编号提出请求。
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href="/docs"
+                href={withBase("/docs")}
                 class="group inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-accent text-ink-950 font-semibold hover:bg-accent-hover transition-colors duration-150 press"
               >
                 查看完整文档
