@@ -6,107 +6,112 @@ import Icon from '../components/Icon.astro';
 import MotionPreview from '../components/MotionPreview.astro';
 import { packs, usageMethods } from '../data/packs';
 import { catalogElements } from '../data/catalog';
-import { siteStats, packRange, packExamples, marqueeNames, withBase } from '../data/site';
+import { siteStats, packRange, packExamples, marqueeNames, storyNames, withBase } from '../data/site';
 
 const showcaseIndices = [0, 1, 3, 4, 5, 6];
+const heroStats = [
+  { value: String(siteStats.total), label: '名称总数', sub: `${siteStats.packCount} 组 × ${siteStats.perPack} 个` },
+  { value: String(siteStats.packCount), label: '分组', sub: '各有自己的观感' },
+  { value: 'MIT', label: '开源许可', sub: '允许商业使用' },
+];
 ---
 
 <BaseLayout title="Motion Prompt — 为 AI 而准备的动效名称库">
   <Navbar />
 
   <main>
-    <!-- Hero: asymmetric layout -->
-    <section class="relative overflow-hidden pt-32 pb-16">
-      <!-- Background: subtle grid + single accent orb -->
+    <!-- Hero -->
+    <section class="relative overflow-hidden pt-28 pb-14 lg:pt-36 lg:pb-20">
       <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute top-24 right-[10%] w-[400px] h-[400px] bg-accent/6 rounded-full blur-[120px]"></div>
-        <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 80px 80px;"></div>
+        <div class="absolute -top-32 right-[6%] w-[520px] h-[420px] bg-accent/[0.07] rounded-full blur-[130px]"></div>
+        <div class="absolute inset-0 hero-grid"></div>
+        <div class="absolute inset-x-0 bottom-0 h-px bg-white/[0.06]"></div>
       </div>
 
       <div class="relative max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <!-- Left: main content -->
-          <div class="lg:col-span-7">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-8 stagger-item">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              <span>{siteStats.total} 个名称 · {siteStats.packCount} 组分类 · {siteStats.languages} 种语言版本</span>
-            </div>
+        <div class="flex flex-wrap items-center gap-3 mb-10 font-mono text-[11px] tracking-[0.16em] uppercase text-white/55 stagger-item">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+          <span>Motion Prompt / 2026</span>
+          <span class="hidden sm:block w-8 h-px bg-white/15"></span>
+          <span class="text-white/50">{siteStats.total} names · {siteStats.packCount} packs</span>
+        </div>
 
-            <h1 class="text-display text-5xl md:text-6xl lg:text-7xl text-white mb-8 stagger-item">
-              为「你让 AI 做的那些事」而准备的名称库
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <div class="lg:col-span-8">
+            <h1 class="text-display text-[1.75rem] sm:text-5xl lg:text-[3rem] xl:text-[3.25rem] leading-[1.22] sm:leading-[1.18] text-white mb-7 stagger-item">
+              为「你让 AI 做的<span class="whitespace-nowrap">那些事」</span><br class="hidden xl:block" />而准备的名称库
             </h1>
 
-            <p class="text-body text-white/65 text-lg mb-10 stagger-item">
+            <p class="text-body text-white/65 text-base md:text-lg mb-9 stagger-item">
               每个名称都配有一段动态示例、一行含义说明，以及一个如何向 AI 提出需求的示例。涵盖动效运动、镜头运动、UI 组件、落地页效果与照片观感。
             </p>
 
-            <div class="flex flex-wrap items-center gap-4 stagger-item">
+            <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 stagger-item">
               <a
                 href={withBase("/docs")}
-                class="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-accent text-ink-950 font-semibold hover:bg-accent-hover transition-colors duration-150 press"
+                class="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-accent text-ink-950 font-semibold hover:bg-accent-hover transition-colors duration-150 press w-full sm:w-auto"
               >
                 浏览完整文档
-                <Icon name="arrowRight" size={16} strokeWidth={2.5} class="group-hover:translate-x-0.5 transition-transform" />
+                <Icon name="arrowRight" size={16} strokeWidth={2.5} class="group-hover:translate-x-0.5 transition-transform duration-200" />
               </a>
               <a
                 href="#usage"
-                class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white font-medium hover:bg-white/[0.08] transition-colors duration-150"
+                class="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white font-medium hover:bg-white/[0.08] hover:border-white/[0.16] transition-colors duration-150 press w-full sm:w-auto"
               >
                 查看使用方式
               </a>
             </div>
           </div>
 
-          <!-- Right: floating stats card -->
-          <div class="lg:col-span-5 lg:pt-8">
-            <div class="relative">
-              <div class="absolute -inset-4 bg-accent/5 rounded-3xl blur-2xl"></div>
-              <div class="relative p-6 rounded-2xl bg-ink-900 border border-white/[0.08] card-shadow">
-                <div class="space-y-1">
-                  {[
-                    { value: String(siteStats.total), label: '名称总数', sub: `${siteStats.packCount} 组 × ${siteStats.perPack} 个` },
-                    { value: String(siteStats.languages), label: '语言版本', sub: '中 · 英 · 日 · 西 · 繁' },
-                    { value: 'MIT', label: '开源许可', sub: '允许商业使用' },
-                  ].map((stat, i) => (
-                    <div class:list={['flex items-center justify-between py-4', i < 2 ? 'border-b border-white/[0.06]' : '']}>
-                      <div>
-                        <div class="text-xs text-white/55 mb-1">{stat.label}</div>
-                        <div class="text-sm text-white/65">{stat.sub}</div>
-                      </div>
-                      <div class="font-display text-3xl font-semibold text-white">{stat.value}</div>
-                    </div>
-                  ))}
+          <div class="lg:col-span-4 lg:pt-2">
+            <div class="text-[10px] font-mono tracking-[0.18em] uppercase text-white/50 mb-4">At a glance</div>
+            <div class="grid grid-cols-3 lg:grid-cols-1 divide-x lg:divide-x-0 lg:divide-y divide-white/[0.08] border-y border-white/[0.08]">
+              {heroStats.map((stat) => (
+                <div class="px-3 py-4 lg:px-0 lg:py-5 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-1 lg:gap-4">
+                  <div>
+                    <div class="text-[10px] font-mono uppercase tracking-[0.14em] text-white/55">{stat.label}</div>
+                    <div class="text-[11px] text-white/65 mt-1 hidden lg:block">{stat.sub}</div>
+                  </div>
+                  <div class="font-display text-2xl lg:text-4xl font-semibold text-white tabular-nums">{stat.value}</div>
                 </div>
-              </div>
+              ))}
+            </div>
+            <div class="hidden lg:flex mt-6 pt-4 border-t border-white/[0.08] items-center justify-between font-mono text-[10px] tracking-[0.14em] uppercase text-white/50">
+              <span>Catalog range</span>
+              <span>001 — {siteStats.total}</span>
             </div>
           </div>
+        </div>
+
+        <div class="mt-16 hidden lg:flex items-center gap-3 text-[10px] font-mono tracking-[0.2em] uppercase text-white/50">
+          <span class="w-px h-8 bg-white/10"></span>
+          <span>Scroll to explore</span>
         </div>
       </div>
     </section>
 
-    <!-- Motion Preview Showcase -->
-    <section class="py-16 border-b border-white/[0.06]">
+    <!-- Live motion previews -->
+    <section class="py-16 lg:py-20 border-b border-white/[0.06]">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div class="section-eyebrow">
+          <span class="section-eyebrow__index">01</span>
+          <span>动态示例 / Live cells</span>
+          <span class="section-eyebrow__rule"></span>
+          <span class="section-eyebrow__meta">6 / {siteStats.total}</span>
+        </div>
+
+        <div class="mb-9 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
           <div class="max-w-xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
-              <Icon name="play" size={12} strokeWidth={1.5} />
-              动态示例
-            </div>
-            <h2 class="text-display text-3xl md:text-4xl text-white mb-3">
-              看看这些名称长什么样
-            </h2>
-            <p class="text-body text-white/60">
-              每一个名称都是一种可复现的运动语言。以下是其中 6 种的实际效果。
-            </p>
+            <h2 class="text-display text-3xl md:text-4xl text-white mb-3">看看这些名称长什么样</h2>
+            <p class="text-body text-white/65 text-sm md:text-base">每一个名称都是一种可复现的运动语言。以下 6 个示例直接取自官方 Pack，按同一时间轴实时绘制。</p>
           </div>
-          <a href={withBase("/docs")} class="inline-flex items-center gap-2 text-sm text-white/65 hover:text-white transition-colors duration-150 shrink-0">
+          <a href={withBase("/docs")} class="group inline-flex items-center gap-2 text-sm text-white/65 hover:text-white transition-colors duration-150 shrink-0">
             查看全部 {siteStats.total} 个名称
-            <Icon name="arrowRight" size={14} strokeWidth={1.5} />
+            <Icon name="arrowRight" size={14} strokeWidth={1.5} class="group-hover:translate-x-1 transition-transform duration-200" />
           </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-7">
           {showcaseIndices.map((index) => (
             <MotionPreview
               pack="motion"
@@ -118,14 +123,14 @@ const showcaseIndices = [0, 1, 3, 4, 5, 6];
       </div>
     </section>
 
-    <!-- Marquee -->
-    <section class="py-6 border-b border-white/[0.06] overflow-hidden marquee">
+    <!-- Name ticker -->
+    <section class="py-5 border-b border-white/[0.06] overflow-hidden marquee marquee-mask">
       <div class="flex whitespace-nowrap animate-marquee marquee-content">
         {[0, 1].map(() => (
           <div class="flex items-center gap-8 pr-8">
             {marqueeNames.map((name) => (
-              <span class="flex items-center gap-3 text-xs text-white/50 font-mono">
-                <span class="w-1 h-1 rounded-full bg-accent/40"></span>
+              <span class="flex items-center gap-3 text-[11px] text-white/55 font-mono tracking-[0.08em]">
+                <span class="w-1 h-1 rounded-full bg-accent/60"></span>
                 {name}
               </span>
             ))}
@@ -134,63 +139,62 @@ const showcaseIndices = [0, 1, 3, 4, 5, 6];
       </div>
     </section>
 
-    <!-- Packs: asymmetric bento -->
-    <section id="packs" class="py-24">
+    <!-- Packs -->
+    <section id="packs" class="py-20 lg:py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-12 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
-            <Icon name="grid" size={12} strokeWidth={1.5} />
-            八组分类
-          </div>
-          <h2 class="text-display text-4xl md:text-5xl text-white mb-4">
-            每组 24 个名称
-          </h2>
-          <p class="text-body text-white/60">
-            各有自己的观感与配色。一个分组要做对的是名称，而不是某种固定风格。
-          </p>
+        <div class="section-eyebrow">
+          <span class="section-eyebrow__index">02</span>
+          <span>八组分类 / Packs</span>
+          <span class="section-eyebrow__rule"></span>
+          <span class="section-eyebrow__meta">001 — {siteStats.total}</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+          <div class="max-w-2xl">
+            <h2 class="text-display text-4xl md:text-5xl text-white mb-4">每组 24 个名称</h2>
+            <p class="text-body text-white/65">各有自己的观感与配色。一个分组要做对的是名称，而不是某种固定风格。</p>
+          </div>
+          <a href={withBase("/docs")} class="group inline-flex items-center gap-2 text-sm text-white/65 hover:text-white transition-colors duration-150 shrink-0">
+            按编号浏览
+            <Icon name="arrowRight" size={14} strokeWidth={1.5} class="group-hover:translate-x-1 transition-transform duration-200" />
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           {packs.map((pack, i) => (
             <a
               href={`${withBase("/docs")}#${pack.id}`}
-              class="group relative p-6 rounded-2xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 card-shadow stagger-item"
-              style={`animation-delay: ${i * 80}ms`}
+              class="group relative flex flex-col p-6 md:p-7 rounded-2xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-200 card-shadow card-lift stagger-item"
+              style={`animation-delay: ${i * 70}ms`}
             >
-              <!-- Index -->
-              <div class="flex items-start justify-between mb-4">
-                <span class="text-[11px] font-mono text-white/55">{packRange(pack.id)}</span>
-                <span class="w-1.5 h-1.5 rounded-full" style={`background-color: ${pack.color}`}></span>
+              <span class="absolute inset-x-6 top-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={`background: linear-gradient(90deg, transparent, ${pack.color}, transparent)`}></span>
+
+              <div class="flex items-start justify-between gap-4 mb-5">
+                <span class="text-[11px] font-mono text-white/55 tracking-[0.1em]">{packRange(pack.id)}</span>
+                <span class="flex items-center gap-2.5">
+                  <span class="w-1.5 h-1.5 rounded-full" style={`background-color: ${pack.color}`}></span>
+                  <Icon name="arrowUpRight" size={15} strokeWidth={1.5} class="text-white/50 group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+                </span>
               </div>
 
-              <!-- Title -->
-              <h3 class="font-display text-xl font-semibold text-white mb-1">
-                {pack.name}
-              </h3>
+              <h3 class="font-display text-xl font-semibold text-white mb-1">{pack.name}</h3>
               <p class="text-[11px] text-white/55 font-mono mb-4">{pack.subtitle}</p>
+              <p class="text-sm text-white/65 leading-relaxed mb-5">{pack.description}</p>
 
-              <!-- Description -->
-              <p class="text-sm text-white/60 leading-relaxed mb-5">
-                {pack.description}
-              </p>
-
-              <!-- Examples -->
-              <div class="space-y-1.5 mb-5">
-                {packExamples(pack.id).map((ex) => (
-                  <div class="flex items-center gap-2 text-xs font-mono" style={`color: ${pack.color}80`}>
-                    <Icon name="zap" size={9} strokeWidth={2} />
-                    {ex}
-                  </div>
-                ))}
-              </div>
-
-              <!-- Tags -->
-              <div class="flex flex-wrap gap-1.5">
-                {pack.tags.slice(0, 3).map((tag) => (
-                  <span class="px-2 py-0.5 text-[11px] rounded-md bg-white/[0.04] text-white/55">
-                    {tag}
-                  </span>
-                ))}
+              <div class="mt-auto flex flex-col items-start md:flex-row md:items-end md:justify-between gap-3 md:gap-4">
+                <div class="space-y-1.5">
+                  {packExamples(pack.id).map((ex) => (
+                    <div class="flex items-center gap-2 text-xs font-mono text-white/65">
+                      <Icon name="zap" size={9} strokeWidth={2} class="text-accent" />
+                      {ex}
+                    </div>
+                  ))}
+                </div>
+                <div class="flex flex-wrap gap-1.5 md:justify-end">
+                  {pack.tags.slice(0, 3).map((tag) => (
+                    <span class="px-2 py-0.5 text-[11px] rounded-md bg-white/[0.04] text-white/55">{tag}</span>
+                  ))}
+                </div>
               </div>
             </a>
           ))}
@@ -198,107 +202,102 @@ const showcaseIndices = [0, 1, 3, 4, 5, 6];
       </div>
     </section>
 
-    <!-- Story: split screen -->
-    <section class="py-20 border-y border-white/[0.06] bg-ink-900/50">
+    <!-- Origin -->
+    <section class="py-20 lg:py-24 border-y border-white/[0.06] bg-ink-900/40">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
-              <Icon name="sparkles" size={12} strokeWidth={1.5} />
-              为什么做这个
-            </div>
-            <h2 class="text-display text-3xl md:text-4xl text-white mb-6">
+        <div class="section-eyebrow">
+          <span class="section-eyebrow__index">03</span>
+          <span>为什么做这个 / Origin</span>
+          <span class="section-eyebrow__rule"></span>
+          <span class="section-eyebrow__meta">Shohei Ohtaki</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <div class="lg:col-span-7">
+            <h2 class="text-display text-3xl md:text-4xl text-white mb-8 pl-5 border-l-2 border-accent leading-snug">
               限制人们的不是缺乏想象力，而是不知道这种运动叫什么
             </h2>
-            <p class="text-body text-white/60 mb-6">
-              我发布了几段短视频，给动效运动和镜头运动配上名称，接下来几天收到了大量评论。其中一条的大意是：一直限制着他们的并不是缺乏想象力，而是不知道这种运动叫什么。
-            </p>
-            <p class="text-body text-white/60">
-              读完这条评论我想：如果由熟悉各自领域的人，用多种语言，把「为了和 AI 良好协作所需的共同语言」整理成一套可供翻阅的库，那会非常有用。
-            </p>
+            <div class="space-y-5 text-body text-white/65 text-[15px]">
+              <p>我发布了几段短视频，给动效运动和镜头运动配上名称，接下来几天收到了大量评论。其中一条的大意是：一直限制着他们的并不是缺乏想象力，而是不知道这种运动叫什么。</p>
+              <p>如果由熟悉各自领域的人，用多种语言，把「为了和 AI 良好协作所需的共同语言」整理成一套可供翻阅的库，那会非常有用。</p>
+            </div>
+            <div class="mt-8 flex items-center gap-3 text-xs font-mono text-white/55">
+              <span class="w-8 h-px bg-white/15"></span>
+              <span>大瀧 昌平 / 株式会社デイトラ</span>
+            </div>
           </div>
 
-          <div class="relative lg:pt-8">
-            <div class="p-6 rounded-2xl bg-ink-950 border border-white/[0.08]">
-              <div class="space-y-3">
-                {[
-                  { name: 'Mask Reveal', pack: 'Motion', color: '#5eb1ff' },
-                  { name: 'Slow Dolly In', pack: 'Camera', color: '#4a9eff' },
-                  { name: 'Magnetic Button', pack: 'UI', color: '#1a1a2e' },
-                  { name: 'Golden Hour', pack: 'Photo', color: '#ffb454' },
-                ].map((item) => (
-                  <div class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.04] transition-colors duration-150 group">
-                    <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={`background-color: ${item.color}15; border: 1px solid ${item.color}25`}>
-                      <Icon name="play" size={12} style={`color: ${item.color}`} strokeWidth={2} />
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <div class="text-sm font-medium text-white truncate">{item.name}</div>
-                      <div class="text-[11px] text-white/55">{item.pack}</div>
-                    </div>
-                    <Icon name="arrowUpRight" size={14} strokeWidth={1.5} class="text-white/50 group-hover:text-white/65 transition-colors duration-150 shrink-0" />
-                  </div>
-                ))}
-              </div>
+          <div class="lg:col-span-5">
+            <div class="text-[10px] font-mono uppercase tracking-[0.16em] text-white/50 mb-4">从库里随手挑四个</div>
+            <div class="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+              {storyNames.map((item) => (
+                <a href={`${withBase("/docs")}#${item.packId}`} class="group flex items-center gap-4 py-4 hover:bg-white/[0.02] transition-colors duration-150">
+                  <span class="font-mono text-xs text-accent w-10 shrink-0">#{item.id}</span>
+                  <span class="flex-1 min-w-0">
+                    <span class="block text-sm font-medium text-white truncate">{item.name}</span>
+                    <span class="block text-[11px] font-mono text-white/55 truncate">{item.nameEn} · {item.pack}</span>
+                  </span>
+                  <Icon name="arrowUpRight" size={14} strokeWidth={1.5} class="text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Usage: numbered list style -->
-    <section id="usage" class="py-20">
+    <!-- Usage -->
+    <section id="usage" class="py-20 lg:py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-12 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/60 mb-6">
-            <Icon name="book" size={12} strokeWidth={1.5} />
-            使用方式
-          </div>
-          <h2 class="text-display text-4xl md:text-5xl text-white mb-4">
-            三种方式，任选其一
-          </h2>
-          <p class="text-body text-white/60">
-            无论你是用编程 AI、视频生成模型，还是写需求简报，都能用这些名称准确表达。
-          </p>
+        <div class="section-eyebrow">
+          <span class="section-eyebrow__index">04</span>
+          <span>使用方式 / Workflow</span>
+          <span class="section-eyebrow__rule"></span>
+          <span class="section-eyebrow__meta">3 paths</span>
         </div>
 
-        <div class="space-y-4">
+        <div class="mb-10 max-w-2xl">
+          <h2 class="text-display text-4xl md:text-5xl text-white mb-4">三种方式，任选其一</h2>
+          <p class="text-body text-white/65">无论你是用编程 AI、视频生成模型，还是写需求简报，都能用这些名称准确表达。</p>
+        </div>
+
+        <div class="divide-y divide-white/[0.08] border-y border-white/[0.08]">
           {usageMethods.map((method) => (
-            <div class="group p-5 md:p-6 rounded-2xl bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 card-shadow">
-              <div class="flex items-start gap-6">
-                <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
-                  <Icon name={method.icon} size={20} strokeWidth={1.5} />
-                </div>
-                <div class="flex-1">
-                  <div class="flex items-center gap-3 mb-3">
-                    <h3 class="font-display text-xl font-semibold text-white">{method.title}</h3>
-                  </div>
-                  <p class="text-sm text-white/60 leading-relaxed mb-4">
-                    {method.description}
-                  </p>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 py-8 lg:py-10">
+              <div class="lg:col-span-2 flex items-center gap-4 lg:flex-col lg:items-start lg:gap-3">
+                <span class="font-display text-3xl font-semibold text-white/50 tabular-nums">0{method.number}</span>
+                <span class="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+                  <Icon name={method.icon} size={16} strokeWidth={1.5} />
+                </span>
+              </div>
 
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <ol class="space-y-2">
-                      {method.steps.map((step, i) => (
-                        <li class="flex items-start gap-2.5 text-sm text-white/65">
-                          <span class="w-5 h-5 rounded-full bg-white/[0.04] flex items-center justify-center text-[11px] text-white/65 shrink-0 mt-0.5">
-                            {i + 1}
-                          </span>
-                          {step}
-                        </li>
-                      ))}
-                    </ol>
+              <div class="lg:col-span-6">
+                <h3 class="font-display text-xl font-semibold text-white mb-2">{method.title}</h3>
+                <p class="text-sm text-white/65 leading-relaxed mb-5">{method.description}</p>
+                <ol class="space-y-2">
+                  {method.steps.map((step, i) => (
+                    <li class="flex items-start gap-3 text-sm text-white/65">
+                      <span class="font-mono text-[11px] text-accent mt-0.5 w-4 shrink-0">{i + 1}</span>
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+              </div>
 
-                    {method.code && (
-                      <div class="p-4 rounded-xl bg-ink-950 border border-white/[0.06] font-mono text-xs text-white/50 overflow-x-auto self-start">
-                        <div class="flex items-center gap-2 mb-2">
-                          <Icon name="terminal" size={11} strokeWidth={1.5} class="text-white/50" />
-                          <span class="text-white/50">terminal</span>
-                        </div>
-                        {method.code}
-                      </div>
-                    )}
+              <div class="lg:col-span-4">
+                {method.code ? (
+                  <div class="p-4 rounded-xl bg-ink-900 border border-white/[0.08] font-mono text-xs text-white/65 overflow-x-auto">
+                    <div class="flex items-center gap-2 mb-2 text-white/50">
+                      <Icon name="terminal" size={11} strokeWidth={1.5} />
+                      <span>terminal</span>
+                    </div>
+                    <code class="whitespace-pre-wrap break-all">{method.code}</code>
                   </div>
-                </div>
+                ) : (
+                  <div class="p-4 rounded-xl border border-dashed border-white/[0.08] text-xs text-white/55 leading-relaxed">
+                    把提示词交给编程 AI，它会为你的领域生成同类的名称示例。
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -307,31 +306,34 @@ const showcaseIndices = [0, 1, 3, 4, 5, 6];
     </section>
 
     <!-- CTA -->
-    <section class="py-20">
+    <section class="py-20 lg:py-24 border-t border-white/[0.06]">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="relative p-16 md:p-20 rounded-3xl bg-ink-900 border border-white/[0.08] overflow-hidden text-center">
-          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-accent/8 rounded-full blur-[100px]"></div>
+        <div class="relative overflow-hidden">
+          <div class="section-eyebrow">
+            <span class="section-eyebrow__index">05</span>
+            <span>开始 / Next step</span>
+            <span class="section-eyebrow__rule"></span>
+            <span class="section-eyebrow__meta">MIT licensed</span>
+          </div>
 
-          <div class="relative">
-            <h2 class="text-display text-3xl md:text-5xl text-white mb-6">
-              开始用名称和 AI 对话
-            </h2>
-            <p class="text-body text-white/60 mb-10 max-w-lg mx-auto">
-              打开名称库，挑选你想要的示例，发送给 AI。或者直接按编号提出请求。
-            </p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div class="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+            <div>
+              <h2 class="text-display text-3xl md:text-5xl text-white mb-5">挑一个名称，剩下的交给 AI</h2>
+              <p class="text-body text-white/65 max-w-lg">打开名称库，挑选你想要的示例，发送给 AI。或者直接按编号 #001 到 #{siteStats.total} 提出请求。</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 shrink-0">
               <a
                 href={withBase("/docs")}
-                class="group inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-accent text-ink-950 font-semibold hover:bg-accent-hover transition-colors duration-150 press"
+                class="group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-accent text-ink-950 font-semibold hover:bg-accent-hover transition-colors duration-150 press"
               >
                 查看完整文档
-                <Icon name="arrowRight" size={16} strokeWidth={2.5} class="group-hover:translate-x-0.5 transition-transform" />
+                <Icon name="arrowRight" size={16} strokeWidth={2.5} class="group-hover:translate-x-0.5 transition-transform duration-200" />
               </a>
               <a
                 href="https://github.com/showheyohtaki/motion-prompt"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white font-medium hover:bg-white/[0.08] transition-colors duration-150"
+                class="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white font-medium hover:bg-white/[0.08] hover:border-white/[0.16] transition-colors duration-150 press"
               >
                 <Icon name="github" size={16} strokeWidth={1.5} />
                 GitHub 仓库

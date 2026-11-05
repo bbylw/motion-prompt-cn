@@ -1,6 +1,6 @@
 ---
 import PreviewCanvas from './PreviewCanvas.astro';
-import { catalogPacks } from '../data/catalog';
+import { catalogPacks, catalogElements } from '../data/catalog';
 
 interface Props {
   pack?: string;
@@ -10,10 +10,13 @@ interface Props {
 
 const { pack = 'motion', index = 0, label = '' } = Astro.props;
 const size = catalogPacks.find((item) => item.id === pack) ?? catalogPacks[0];
+const localNo = String(index + 1).padStart(2, '0');
+const element = catalogElements.find((item) => item.pack === pack && item.no === localNo);
+const number = element?.id ?? String(index + 1).padStart(3, '0');
 ---
 
-<div class="group relative rounded-xl overflow-hidden bg-ink-900 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-150">
-  <div class="relative overflow-hidden">
+<figure class="group">
+  <div class="relative rounded-xl overflow-hidden bg-ink-900 border border-white/[0.06] group-hover:border-white/[0.16] transition-colors duration-200 card-lift">
     <PreviewCanvas
       pack={pack}
       index={index}
@@ -21,12 +24,16 @@ const size = catalogPacks.find((item) => item.id === pack) ?? catalogPacks[0];
       height={size.height}
       label={label ? `${label} 动效示例` : ''}
     />
-    <!-- Bottom gradient overlay for label readability -->
-    <div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-ink-950/80 to-transparent pointer-events-none"></div>
+    <span class="absolute top-2.5 left-3 z-10 text-[10px] font-mono tracking-[0.12em] text-white/55">#{number}</span>
+    <span class="absolute top-2.5 right-3 z-10 flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-[0.18em] text-white/50">
+      <span class="w-1 h-1 rounded-full bg-accent"></span>
+      Live
+    </span>
   </div>
   {label && (
-    <div class="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/50">
-      {label}
-    </div>
+    <figcaption class="mt-2.5 flex items-baseline justify-between gap-3 px-0.5">
+      <span class="text-xs text-white/65 truncate">{label}</span>
+      <span class="text-[10px] font-mono text-white/50 shrink-0">{size.width}×{size.height}</span>
+    </figcaption>
   )}
-</div>
+</figure>

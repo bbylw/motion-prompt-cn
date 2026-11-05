@@ -34,3 +34,16 @@ export function packExamples(id: string, limit = 2): string[] {
 export const marqueeNames = catalogElements
   .filter((_, index) => index % 12 === 0)
   .map((element) => element.nameEn);
+
+export const storyNames = ['motion', 'camera', 'ui', 'photo'].map((id) => {
+  const element = catalogElements.find((item) => item.pack === id);
+  const pack = catalogPacks.find((item) => item.id === id);
+  if (!element || !pack) throw new Error(`缺少分组数据：${id}`);
+  return {
+    id: element.id,
+    name: element.name,
+    nameEn: element.nameEn,
+    pack: pack.name,
+    packId: id,
+  };
+});
